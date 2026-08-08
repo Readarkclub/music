@@ -73,6 +73,33 @@ in chunks so the page keeps drawing while it happens, so the scheduler never stu
 Timing runs off a 30 ms lookahead loop against `AudioContext.currentTime` rather than
 `setTimeout`.
 
+## Look and motion
+
+Every page carries two switches, top left. Both choices are saved and follow you between
+pages; a small script in `<head>` reads them before first paint, so nothing flashes.
+
+**Look** swaps one block of CSS custom properties. Nothing else in the stylesheet changes —
+every colour, face and rule already reads from a token.
+
+| | |
+|---|---|
+| **Nocturne** | The default. Dark ground, the piece played in an unlit room. |
+| **Classical** | An editorial paper ground built on the Classical design system: Cormorant Garamond over Lora where they're installed, justified copy, hairline rules, colour applied as stroke rather than fill. The keyboard becomes a real one — white keys, black keys. |
+
+**Motion** decides what a note does once it has sounded. The key still lights in every mode;
+this only governs the mark it leaves behind.
+
+| | |
+|---|---|
+| **Bloom** | A glow lifting off the key. In Classical it draws as a ring, since that system strokes rather than fills. |
+| **Ripple** | A ring opening out from the key — or from the fret, in *Still Water*. |
+| **Trails** | Every part, not just the piano, leaves a mark that drifts up out of the keys, so the strip above the keyboard becomes a slow piano roll of the last few seconds. In *Still Water* the mark travels off down the string toward the bridge instead. |
+| **Still** | Keys light, nothing moves. |
+
+Marks come from a fixed recycled pool of elements and animate in CSS, so the count stays
+flat however dense the music gets. With `prefers-reduced-motion: reduce` and no saved
+choice, motion starts on **Still**.
+
 ## Playing along
 
 Click any part name in the score map to mute it and the rest becomes a backing track.
