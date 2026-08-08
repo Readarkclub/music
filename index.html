@@ -6,12 +6,45 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Quiet Pieces — music that plays itself in the browser</title>
 <style>
+  /* ── Nocturne — the default look ──────────────────────────────────────── */
   :root{
     --ink:#080B16; --ink-2:#121828; --edge:#212A45; --line:#2E395C;
-    --silt:#818CB4; --pale:#E9EBF5; --accent:#E0A458;
+    --silt:#818CB4; --pale:#E9EBF5; --accent:#E0A458; --faint:#212A45;
+    --wash:rgba(255,255,255,.028); --arc-alpha:.28; --arc-alpha-hi:.72;
     --serif:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
     --mono:'SF Mono','JetBrains Mono',Menlo,Consolas,'Liberation Mono',monospace;
+    --display:var(--serif); --label:var(--mono);
+    --h1-style:italic; --h1-weight:400; --h1-track:-.01em;
   }
+
+  /* ── Classical — the packaged design system, on paper ─────────────────── */
+  :root[data-style="classical"]{
+    --ink:#F3F2F2; --ink-2:#EAE9E9; --edge:#D7D3D3; --line:#BAB6B6;
+    --silt:#605D5D; --pale:#201F1D; --accent:#B68235; --faint:#9B9797;
+    --wash:rgba(32,31,29,.035); --arc-alpha:.34; --arc-alpha-hi:.8;
+    --serif:'Lora','Iowan Old Style','Palatino Linotype',Georgia,serif;
+    --display:'Cormorant Garamond','EB Garamond',Garamond,'Palatino Linotype',Georgia,serif;
+    --label:var(--serif);
+    --h1-style:normal; --h1-weight:300; --h1-track:-.015em;
+  }
+  :root[data-style="classical"] .credit,
+  :root[data-style="classical"] .pblurb,
+  :root[data-style="classical"] .note p{text-align:justify;hyphens:auto;text-wrap:pretty}
+  .eyebrow,.pline,.pnum,.pgo,.prefl{font-variant-numeric:tabular-nums}
+
+  /* ---- look switch ---- */
+  .prefs{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:clamp(26px,4vw,40px) 0 0}
+  .prefl{font-family:var(--label);font-size:10px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--silt)}
+  .seg{display:flex;border:1px solid var(--edge);border-radius:999px;overflow:hidden}
+  .seg button{font-family:var(--label);font-size:10.5px;letter-spacing:.13em;
+    text-transform:uppercase;background:transparent;border:0;border-left:1px solid var(--edge);
+    color:var(--silt);padding:7px 13px;cursor:pointer;transition:color .2s,background .2s}
+  .seg button:first-child{border-left:0}
+  .seg button:hover{color:var(--accent)}
+  .seg button[aria-pressed="true"]{color:var(--accent);
+    background:color-mix(in srgb,var(--accent) 13%,transparent)}
+  .seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{background:var(--ink);color:var(--pale);font-family:var(--serif);min-height:100vh;
@@ -19,10 +52,10 @@
     -webkit-font-smoothing:antialiased}
   .sheet{width:100%;max-width:820px}
 
-  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;
+  .eyebrow{font-family:var(--label);font-size:11px;letter-spacing:.22em;
     text-transform:uppercase;color:var(--silt);margin:0}
-  h1{font-style:italic;font-weight:400;font-size:clamp(42px,8vw,74px);line-height:.95;
-    margin:12px 0 0;letter-spacing:-.01em}
+  h1{font-family:var(--display);font-style:var(--h1-style);font-weight:var(--h1-weight);
+    font-size:clamp(42px,8vw,74px);line-height:.95;margin:12px 0 0;letter-spacing:var(--h1-track)}
   .credit{margin:18px 0 0;font-size:16px;color:var(--silt);max-width:54ch;line-height:1.6}
   .credit b{color:var(--pale);font-weight:400}
 
@@ -31,31 +64,31 @@
   a.piece{display:block;text-decoration:none;color:inherit;
     padding:clamp(22px,4vw,32px) 0;border-bottom:1px solid var(--edge);
     transition:background .3s ease}
-  a.piece:hover{background:linear-gradient(90deg,rgba(255,255,255,.028),transparent 70%)}
+  a.piece:hover{background:linear-gradient(90deg,var(--wash),transparent 70%)}
   a.piece:focus-visible{outline:2px solid var(--tint);outline-offset:4px}
   .ptop{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-  .pnum{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--line)}
-  .ptitle{font-style:italic;font-weight:400;font-size:clamp(28px,5vw,42px);line-height:1;
-    margin:0;transition:color .25s ease}
+  .pnum{font-family:var(--label);font-size:11px;letter-spacing:.2em;color:var(--line)}
+  .ptitle{font-family:var(--display);font-style:italic;font-weight:400;
+    font-size:clamp(28px,5vw,42px);line-height:1;margin:0;transition:color .25s ease}
   a.piece:hover .ptitle{color:var(--tint)}
-  .pgo{margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.2em;
+  .pgo{margin-left:auto;font-family:var(--label);font-size:11px;letter-spacing:.2em;
     text-transform:uppercase;color:var(--silt);transition:color .25s ease}
   a.piece:hover .pgo{color:var(--tint)}
-  .pline{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  .pline{font-family:var(--label);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
     color:var(--silt);margin:12px 0 0}
   .pblurb{font-size:15px;line-height:1.6;color:var(--silt);max-width:56ch;margin:12px 0 0}
   .pblurb b{color:var(--pale);font-weight:400}
-  .pparts{font-family:var(--mono);font-size:10px;letter-spacing:.14em;
-    color:var(--edge);margin:12px 0 0}
+  .pparts{font-family:var(--label);font-size:10px;letter-spacing:.14em;
+    color:var(--faint);margin:12px 0 0}
 
   .arc{display:flex;align-items:flex-end;gap:2px;height:42px;margin:20px 0 0}
-  .arc i{flex:1;background:var(--tint);opacity:.28;border-radius:1px 1px 0 0;min-height:1px;
+  .arc i{flex:1;background:var(--tint);opacity:var(--arc-alpha);border-radius:1px 1px 0 0;min-height:1px;
     transition:opacity .45s ease}
-  a.piece:hover .arc i{opacity:.72}
+  a.piece:hover .arc i{opacity:var(--arc-alpha-hi)}
 
   .note{margin:clamp(34px,5vw,52px) 0 0;font-size:15px;color:var(--silt);
     line-height:1.65;max-width:58ch}
-  .note h2{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  .note h2{font-family:var(--label);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
     color:var(--silt);font-weight:400;margin:0 0 12px}
   .note + .note{margin-top:clamp(26px,4vw,36px)}
   .note em{color:var(--pale);font-style:italic}
@@ -65,10 +98,24 @@
   .note a:hover{border-color:var(--accent);color:var(--accent)}
 
   footer{margin:clamp(34px,5vw,54px) 0 0;padding-top:18px;border-top:1px solid var(--edge);
-    font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--edge)}
+    font-family:var(--label);font-size:11px;letter-spacing:.14em;color:var(--faint)}
 
   @media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important}}
 </style>
+<script>
+/* Read the saved look and motion before first paint, so switching pages or
+   reloading never flashes the other theme. Shared across every page here. */
+(function(){
+  var d = document.documentElement, s = null, m = null;
+  try{ s = localStorage.getItem('qp-style'); m = localStorage.getItem('qp-motion'); }catch(e){}
+  d.setAttribute('data-style', s === 'classical' ? 'classical' : 'nocturne');
+  if(!m){
+    var quiet = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    m = quiet ? 'still' : 'bloom';
+  }
+  d.setAttribute('data-motion', m);
+})();
+</script>
 </head>
 <body>
 <div class="sheet">
@@ -77,7 +124,12 @@
   <h1>Quiet Pieces</h1>
   <p class="credit">Long, slow pieces written to be listened to rather than played at.
   Each one is a single HTML file with no dependencies, no build step and no network calls —
-  every sound is <b>synthesised in your browser</b> the moment you press play. Pick one below.</p>
+  every sound is <b>synthesised in your browser</b> the moment you press play. Pick a look, then pick a piece.</p>
+
+  <div class="prefs">
+    <span class="prefl">Look</span>
+    <div class="seg" id="segStyle" role="group" aria-label="Design style"></div>
+  </div>
 
   <div class="shelf" id="shelf"></div>
 
@@ -90,6 +142,9 @@
     <p>Each player shows its own score as it goes. Click any part name to mute it, and the
     piece keeps playing without it — <em>which is how you turn any of these into something
     to play along with.</em></p>
+    <p>Both players also carry a <b>Motion</b> switch next to this one: what a note leaves
+    behind after it sounds, from a glow to a slow piano roll of the last few seconds, or
+    nothing at all. Whatever you pick here follows you onto every page.</p>
   </section>
 
   <section class="note">
@@ -97,7 +152,8 @@
     <p>Copy the closest existing player to <code>your-piece.html</code>, rewrite the three
     data tables near the top of its script — chords, themes, form — and add one entry to the
     <code>PIECES</code> array in <code>index.html</code>. The score is data, not code; nothing
-    below those tables needs to change unless you want a new instrument.</p>
+    below those tables needs to change unless you want a new instrument. Both looks come
+    along for free, so long as your colours stay in the token blocks at the top of the file.</p>
     <p>Source: <a href="https://github.com/readarkclub/music">github.com/readarkclub/music</a>.</p>
   </section>
 
@@ -114,7 +170,7 @@ const PIECES = [
     title: 'Blue Hour',
     line : 'Nocturne · D♭ major · 4/4 · 106 bars · about seven and a half minutes',
     parts: 'Piano · cello · viola · clarinet · vibraphone · bass · pad · air',
-    tint : '#E0A458',
+    tint : '#E0A458', tintLight: '#A06F24',
     blurb: 'A piano nocturne with a small ensemble behind it. The theme belongs to the cello, ' +
            'is answered by the clarinet through a window into A major, comes apart into a ' +
            'three-voice canon, and returns to the piano alone. <b>Mute Piano R to play the ' +
@@ -126,7 +182,7 @@ const PIECES = [
     title: 'Still Water',
     line : 'Suite · E minor · 6/8 · 122 bars · about five minutes',
     parts: 'Guitar I & II · harp · bass · cello · viola · flute · glass · pad',
-    tint : '#7FBBA9',
+    tint : '#7FBBA9', tintLight: '#3F7C6E',
     blurb: 'A suite for guitar ensemble in seven movements, on four open-string shapes that ' +
            'let the top two strings ring the whole way through. <b>Tab for the guitar I part ' +
            'ships with it</b>, so you can mute that part and play it.',
@@ -147,11 +203,12 @@ function curve(src, n){
 }
 
 const shelf = document.getElementById('shelf');
+const cards = [];
 PIECES.forEach((p, i) => {
   const a = document.createElement('a');
   a.className = 'piece';
   a.href = p.slug + '.html';
-  a.style.setProperty('--tint', p.tint);
+  cards.push(a);
   a.innerHTML =
     '<div class="ptop">' +
       '<span class="pnum">' + String(i+1).padStart(2,'0') + '</span>' +
@@ -165,6 +222,34 @@ PIECES.forEach((p, i) => {
     '<p class="pparts">' + p.parts + '</p>';
   shelf.appendChild(a);
 });
+
+/* ==================== look ====================
+   A pure-CSS swap: the attribute picks a token block. The per-piece tints are
+   the one thing CSS can't reach, so they're re-applied here. */
+const STYLES = [['nocturne','Nocturne'], ['classical','Classical']];
+const root = document.documentElement;
+const seg = document.getElementById('segStyle');
+
+function applyTints(){
+  const light = root.getAttribute('data-style') === 'classical';
+  cards.forEach((a, i) => a.style.setProperty('--tint',
+    light ? (PIECES[i].tintLight || PIECES[i].tint) : PIECES[i].tint));
+}
+function paintSeg(){
+  seg.querySelectorAll('button').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.v === root.getAttribute('data-style'))));
+}
+STYLES.forEach(([v, label]) => {
+  const b = document.createElement('button');
+  b.type = 'button'; b.dataset.v = v; b.textContent = label;
+  b.addEventListener('click', () => {
+    root.setAttribute('data-style', v);
+    try{ localStorage.setItem('qp-style', v); }catch(e){}
+    paintSeg(); applyTints();
+  });
+  seg.appendChild(b);
+});
+paintSeg(); applyTints();
 </script>
 </body>
 </html>

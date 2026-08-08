@@ -6,14 +6,55 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Still Water — a suite in seven parts</title>
 <style>
+  /* ── Nocturne — the default look ──────────────────────────────────────── */
   :root{
     --ink:#0A1618; --ink-2:#0F2126; --edge:#1C3339; --line:#2A464C;
-    --silt:#7A969B; --pale:#E3EDEA; --accent:#C9A06A;
+    --silt:#7A969B; --pale:#E3EDEA; --accent:#C9A06A; --faint:#1C3339;
     --gtr1:#C9A06A; --gtr2:#D8C08E; --harp:#E6D6AE; --bass:#5F8A7E;
     --cello:#8E9BC0; --viola:#A98FC0; --flute:#9FCBB4; --glass:#A9CBCC; --pad:#43626C;
     --serif:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
     --mono:'SF Mono','JetBrains Mono',Menlo,Consolas,'Liberation Mono',monospace;
+    --display:var(--serif); --label:var(--mono);
+    --h1-style:italic; --h1-weight:400; --h1-track:-.01em;
+    --mark-fill:radial-gradient(circle,var(--kc) 0%,transparent 62%);
+    --mark-border:0 solid transparent;
+    --sec-a:#C9A06A; --sec-b:#9FC4C6; --sec-c:#D8C08E; --sec-d:#E3EDEA;
   }
+
+  /* ── Classical — the packaged design system, on paper ─────────────────── */
+  :root[data-style="classical"]{
+    --ink:#F3F2F2; --ink-2:#EAE9E9; --edge:#D7D3D3; --line:#BAB6B6;
+    --silt:#605D5D; --pale:#201F1D; --accent:#B68235; --faint:#9B9797;
+    --gtr1:#A06F24; --gtr2:#C28D41; --harp:#8A6A33; --bass:#3F7C6E;
+    --cello:#4A5A86; --viola:#6F4F86; --flute:#4C7A55; --glass:#3F7C8C; --pad:#A8A4A4;
+    --serif:'Lora','Iowan Old Style','Palatino Linotype',Georgia,serif;
+    --display:'Cormorant Garamond','EB Garamond',Garamond,'Palatino Linotype',Georgia,serif;
+    --label:var(--serif);
+    --h1-style:normal; --h1-weight:300; --h1-track:-.015em;
+    /* the system draws with strokes, not fills — so marks become rings here */
+    --mark-fill:none; --mark-border:1px solid var(--kc);
+    --sec-a:#A06F24; --sec-b:#3F7C8C; --sec-c:#8A6A33; --sec-d:#201F1D;
+  }
+  :root[data-style="classical"] .credit,
+  :root[data-style="classical"] footer{text-align:justify;hyphens:auto;text-wrap:pretty}
+  .where,.val,table.tab,.prefl,.eyebrow,.rule span,.diag,.seg button{
+    font-variant-numeric:tabular-nums}
+
+  /* ---- look and motion switches ---- */
+  .prefs{display:flex;flex-wrap:wrap;gap:clamp(14px,3vw,32px);align-items:center;
+    margin:0 0 clamp(20px,3.5vw,34px);padding:0 0 15px;border-bottom:1px solid var(--edge)}
+  .pref{display:flex;align-items:center;gap:11px}
+  .prefl{font-family:var(--label);font-size:10px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--silt)}
+  .seg{display:flex;border:1px solid var(--edge);border-radius:999px;overflow:hidden}
+  .seg button{font-family:var(--label);font-size:10.5px;letter-spacing:.13em;
+    text-transform:uppercase;background:transparent;border:0;border-left:1px solid var(--edge);
+    color:var(--silt);padding:7px 13px;cursor:pointer;transition:color .2s,background .2s}
+  .seg button:first-child{border-left:0}
+  .seg button:hover{color:var(--accent)}
+  .seg button[aria-pressed="true"]{color:var(--accent);
+    background:color-mix(in srgb,var(--accent) 13%,transparent)}
+  .seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{background:var(--ink);color:var(--pale);font-family:var(--serif);min-height:100vh;
@@ -22,16 +63,16 @@
   .sheet{width:100%;max-width:920px}
 
   nav.top{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-    font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    font-family:var(--label);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
     color:var(--silt);margin:0 0 clamp(22px,4vw,38px)}
   nav.top a{color:var(--silt);text-decoration:none;border-bottom:1px solid transparent;
     transition:color .2s,border-color .2s}
   nav.top a:hover{color:var(--accent);border-color:var(--accent)}
 
-  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;
+  .eyebrow{font-family:var(--label);font-size:11px;letter-spacing:.22em;
     text-transform:uppercase;color:var(--silt);margin:0}
-  h1{font-style:italic;font-weight:400;font-size:clamp(38px,7vw,64px);line-height:.95;
-    margin:10px 0 0;letter-spacing:-.01em}
+  h1{font-family:var(--display);font-style:var(--h1-style);font-weight:var(--h1-weight);
+    font-size:clamp(38px,7vw,64px);line-height:.95;margin:10px 0 0;letter-spacing:var(--h1-track)}
   .credit{margin:14px 0 0;font-size:15px;color:var(--silt);max-width:50ch;line-height:1.55}
   .credit b{color:var(--pale);font-weight:400}
 
@@ -45,37 +86,48 @@
   .str[data-s="6"] .wire{height:4px}   .str[data-s="5"] .wire{height:3.2px}
   .str[data-s="4"] .wire{height:2.6px} .str[data-s="3"] .wire{height:2px}
   .str[data-s="2"] .wire{height:1.4px} .str[data-s="1"] .wire{height:1px}
-  .tag{position:absolute;right:0;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
-    color:var(--edge);transition:color .9s ease}
+  .tag{position:absolute;right:0;font-family:var(--label);font-size:10px;letter-spacing:.14em;
+    color:var(--faint);transition:color .9s ease}
   .str.lit .tag{color:var(--silt)}
-  .bloom{position:absolute;width:56px;height:56px;margin:-28px 0 0 -28px;top:50%;
-    border-radius:50%;pointer-events:none;opacity:0;
-    background:radial-gradient(circle,var(--gtr1) 0%,transparent 62%)}
-  .bloom.go{animation:bloom 1.9s cubic-bezier(.15,.7,.3,1) forwards}
-  @keyframes bloom{0%{opacity:.85;transform:scale(.28)}100%{opacity:0;transform:scale(1.5)}}
+  .mark{position:absolute;top:50%;pointer-events:none;opacity:0;border-radius:50%}
+  /* bloom — the string glowing where it was struck */
+  .mark.m-bloom{width:56px;height:56px;margin:-28px 0 0 -28px;
+    background:var(--mark-fill);border:var(--mark-border);
+    animation:m-bloom 1.9s cubic-bezier(.15,.7,.3,1) forwards}
+  @keyframes m-bloom{0%{opacity:.85;transform:scale(.28)}100%{opacity:0;transform:scale(1.5)}}
+  /* ripple — a ring opening out from the fret */
+  .mark.m-ripple{width:22px;height:22px;margin:-11px 0 0 -11px;border:1.5px solid var(--kc);
+    animation:m-ripple 1.8s cubic-bezier(.1,.6,.25,1) forwards}
+  @keyframes m-ripple{0%{opacity:.9;transform:scale(.25)}100%{opacity:0;transform:scale(3.4)}}
+  /* trails — the note travelling off down the string toward the bridge */
+  .mark.m-trails{width:9px;height:9px;margin:-4.5px 0 0 -4.5px;background:var(--kc);
+    animation:m-trails 3.2s cubic-bezier(.2,.5,.4,1) forwards}
+  @keyframes m-trails{0%{opacity:.85;transform:translateX(0) scale(1)}
+    100%{opacity:0;transform:translateX(54px) scale(.35)}}
   .str.lit{animation:wob .45s ease-out}
+  :root[data-motion="still"] .str.lit{animation:none}
   @keyframes wob{0%{transform:translateY(0)}22%{transform:translateY(1.6px)}
     55%{transform:translateY(-1px)}100%{transform:translateY(0)}}
-  .boardnote{font-family:var(--mono);font-size:10px;letter-spacing:.16em;
-    text-transform:uppercase;color:var(--edge);margin:9px 0 0}
+  .boardnote{font-family:var(--label);font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--faint);margin:9px 0 0}
 
   .bay{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(14px,2.5vw,26px);margin:22px 0 0}
-  button.play{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+  button.play{font-family:var(--label);font-size:12px;letter-spacing:.2em;text-transform:uppercase;
     background:transparent;color:var(--pale);border:1px solid var(--line);border-radius:999px;
     padding:13px 30px;cursor:pointer;transition:border-color .25s,color .25s}
   button.play:hover{border-color:var(--accent);color:var(--accent)}
   button.play:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-  .where{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--silt)}
+  .where{font-family:var(--label);font-size:12px;letter-spacing:.1em;color:var(--silt)}
   .where b{color:var(--pale);font-weight:400}
-  .movement{font-family:var(--serif);font-style:italic;font-size:19px;color:var(--pale)}
-  .breath{margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.2em;
+  .movement{font-family:var(--display);font-style:italic;font-size:19px;color:var(--pale)}
+  .breath{margin-left:auto;font-family:var(--label);font-size:11px;letter-spacing:.2em;
     text-transform:uppercase;color:var(--silt);opacity:.35;transition:opacity 1.4s ease}
   .breath.on{opacity:1}
 
   .knobs{display:flex;flex-wrap:wrap;gap:clamp(14px,2.5vw,30px);align-items:center;
     margin:18px 0 0;padding:16px 0 0;border-top:1px solid var(--edge)}
   .knob{display:flex;align-items:center;gap:10px}
-  .knob label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+  .knob label{font-family:var(--label);font-size:11px;letter-spacing:.16em;
     text-transform:uppercase;color:var(--silt)}
   input[type=range]{-webkit-appearance:none;appearance:none;background:transparent;
     width:clamp(84px,14vw,140px);cursor:pointer}
@@ -86,20 +138,20 @@
   input[type=range]::-moz-range-thumb{width:12px;height:12px;border:0;border-radius:50%;
     background:var(--accent)}
   input[type=range]:focus-visible{outline:2px solid var(--accent);outline-offset:6px}
-  .val{font-family:var(--mono);font-size:12px;color:var(--pale);min-width:5ch}
+  .val{font-family:var(--label);font-size:12px;color:var(--pale);min-width:5ch}
   .check{display:flex;align-items:center;gap:8px;cursor:pointer}
   .check input{accent-color:var(--accent);width:14px;height:14px;cursor:pointer}
 
   .score{margin:clamp(26px,4vw,42px) 0 0}
   .scorehead{display:flex;justify-content:space-between;align-items:baseline;
-    font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    font-family:var(--label);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
     color:var(--silt);margin-bottom:14px}
   .prow{display:flex;align-items:center;gap:12px;margin-bottom:5px}
-  .pname{font-family:var(--mono);font-size:10px;letter-spacing:.1em;width:64px;flex:none;
+  .pname{font-family:var(--label);font-size:10px;letter-spacing:.1em;width:64px;flex:none;
     text-align:left;background:none;border:0;padding:3px 0;color:var(--pale);cursor:pointer;
     transition:color .2s}
   .pname:hover{color:var(--accent)}
-  .prow.off .pname{color:var(--edge);text-decoration:line-through}
+  .prow.off .pname{color:var(--faint);text-decoration:line-through}
   .pname:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .cells{display:flex;gap:1px;flex:1;min-width:0}
   .cell{flex:1;height:11px;border-radius:1px;background:var(--ink-2);transition:background .25s}
@@ -107,28 +159,28 @@
   .prow.off .cell.on{background:var(--edge)}
   .cell.at{background:var(--pale)}
   .rule{position:relative;height:22px;margin:8px 0 0 76px}
-  .rule span{position:absolute;top:0;font-family:var(--mono);font-size:9px;letter-spacing:.12em;
+  .rule span{position:absolute;top:0;font-family:var(--label);font-size:9px;letter-spacing:.12em;
     text-transform:uppercase;color:var(--silt);white-space:nowrap;
     padding-left:5px;border-left:1px solid var(--edge)}
-  .hint{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--silt);
+  .hint{font-family:var(--label);font-size:11px;letter-spacing:.08em;color:var(--silt);
     margin:14px 0 0;line-height:1.7}
   .hint b{color:var(--pale);font-weight:400}
 
   .tabwrap{margin:clamp(24px,4vw,40px) 0 0}
   .tabhead{display:flex;justify-content:space-between;align-items:baseline;
-    font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    font-family:var(--label);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
     color:var(--silt);margin-bottom:12px}
-  table.tab{border-collapse:collapse;width:100%;font-family:var(--mono);font-size:14px}
+  table.tab{border-collapse:collapse;width:100%;font-family:var(--label);font-size:14px}
   table.tab td{padding:4px 0;text-align:center;color:var(--line);
     transition:color .35s ease,background .35s ease}
   table.tab td.lbl{text-align:left;width:3ch;color:var(--silt);font-size:11px;letter-spacing:.1em}
   table.tab td.here{color:var(--pale);background:var(--ink-2)}
   table.tab td.now{color:var(--gtr1)}
-  .fingering{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--silt);
+  .fingering{font-family:var(--label);font-size:11px;letter-spacing:.12em;color:var(--silt);
     margin-top:12px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
   .diag{margin:20px 0 0;padding:14px 0 0;border-top:1px solid var(--edge);
-    font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--silt);
+    font-family:var(--label);font-size:11px;letter-spacing:.1em;color:var(--silt);
     display:flex;align-items:center;gap:14px;flex-wrap:wrap}
   .meter{position:relative;flex:1;min-width:110px;height:3px;background:var(--edge);
     border-radius:2px;overflow:hidden}
@@ -143,14 +195,35 @@
     .pname{width:52px;font-size:9px}.rule{margin-left:64px}
   }
   @media (prefers-reduced-motion:reduce){
-    .bloom.go{animation:none}.str.lit{animation:none}*{transition-duration:.01ms !important}
+    .mark{animation:none !important}.str.lit{animation:none}*{transition-duration:.01ms !important}
   }
 </style>
+<script>
+/* Read the saved look and motion before first paint, so switching pages or
+   reloading never flashes the other theme. Shared across every page here. */
+(function(){
+  var d = document.documentElement, s = null, m = null;
+  try{ s = localStorage.getItem('qp-style'); m = localStorage.getItem('qp-motion'); }catch(e){}
+  d.setAttribute('data-style', s === 'classical' ? 'classical' : 'nocturne');
+  if(!m){
+    var quiet = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    m = quiet ? 'still' : 'bloom';
+  }
+  d.setAttribute('data-motion', m);
+})();
+</script>
 </head>
 <body>
 <div class="sheet">
 
   <nav class="top"><a href="index.html">&larr; All pieces</a><a href="blue-hour.html">Blue Hour &rarr;</a></nav>
+
+  <div class="prefs">
+    <div class="pref"><span class="prefl">Look</span>
+      <div class="seg" id="segStyle" role="group" aria-label="Design style"></div></div>
+    <div class="pref"><span class="prefl">Motion</span>
+      <div class="seg" id="segMotion" role="group" aria-label="Motion effect"></div></div>
+  </div>
 
   <p class="eyebrow">Suite · E minor · 6/8 · 122 bars · about five minutes</p>
   <h1>Still Water</h1>
@@ -649,12 +722,29 @@ function stop(){
 $play.addEventListener('click', () => playing ? stop() : start());
 
 /* ==================== strings ==================== */
-const board = document.getElementById('board'), rows = {};
+const board = document.getElementById('board'), rows = {}, pool = {}, poolAt = {};
 for(let s=1;s<=6;s++){
   const d = document.createElement('div');
   d.className='str'; d.dataset.s=s;
-  d.innerHTML = `<div class="wire"></div><div class="bloom"></div><span class="tag">${NAMES[s]}</span>`;
+  d.innerHTML = `<div class="wire"></div><span class="tag">${NAMES[s]}</span>`;
   board.appendChild(d); rows[s]=d;
+  /* four marks per string, recycled — enough for trails to overlap */
+  pool[s] = []; poolAt[s] = 0;
+  for(let i=0;i<4;i++){
+    const m = document.createElement('div');
+    m.className='mark'; d.appendChild(m); pool[s].push(m);
+  }
+}
+/* Which animation a struck string hands its mark is the motion setting. */
+function spawnMark(s, xPct, colour){
+  const mode = document.documentElement.getAttribute('data-motion');
+  if(mode === 'still') return;
+  const m = pool[s][poolAt[s]++ % pool[s].length];
+  m.className = 'mark';                       // restart the animation from zero
+  void m.offsetWidth;
+  m.style.setProperty('--kc', colour);
+  m.style.left = xPct + '%';
+  m.classList.add('m-' + mode);
 }
 const xOf = f => 3.5 + f*4.2;
 
@@ -726,9 +816,7 @@ function paint(e){
   const r = rows[e.s];
   r.classList.remove('lit'); void r.offsetWidth; r.classList.add('lit');
   setTimeout(()=>r.classList.remove('lit'), 1400);
-  const bl = r.querySelector('.bloom');
-  bl.style.left = xOf(e.f)+'%';
-  bl.classList.remove('go'); void bl.offsetWidth; bl.classList.add('go');
+  spawnMark(e.s, xOf(e.f), getComputedStyle(root).getPropertyValue('--gtr1').trim());
 
   if(e.bar !== lastBar){
     PARTS.forEach(p => {
@@ -744,10 +832,12 @@ function paint(e){
     $pat.textContent = PATTERNS[B.pat].say;
     $brth.textContent = e.bar%2===0 ? 'breathe in' : 'breathe out';
     $brth.classList.toggle('on', e.bar%2===0);
+    /* the guitar's colour shifts by movement; the four shades are tokens, so
+       they follow whichever look is on */
     root.style.setProperty('--gtr1',
-      B.pat==='harm' || B.pat==='ring' ? '#E3EDEA' :
-      B.section>=4 && B.section<=6 ? '#9FC4C6' :
-      B.section>=7 && B.section<=11 ? '#D8C08E' : '#C9A06A');
+      B.pat==='harm' || B.pat==='ring' ? 'var(--sec-d)' :
+      B.section>=4 && B.section<=6 ? 'var(--sec-b)' :
+      B.section>=7 && B.section<=11 ? 'var(--sec-c)' : 'var(--sec-a)');
   }
   drawTab(e.bar, e.i);
 }
@@ -793,6 +883,31 @@ $room.addEventListener('input', () => {
 document.addEventListener('keydown', ev => {
   if(ev.code==='Space' && ev.target.tagName!=='INPUT'){ ev.preventDefault(); $play.click(); }
 });
+
+/* ==================== look and motion ====================
+   The look is a pure-CSS swap — the attribute picks a token block. Motion
+   decides which animation a struck string hands to the mark pool. */
+const STYLES = [['nocturne','Nocturne'], ['classical','Classical']];
+const MOTIONS = [['bloom','Bloom'], ['ripple','Ripple'], ['trails','Trails'], ['still','Still']];
+
+function segment(host, options, attr, key){
+  const paint = () => host.querySelectorAll('button').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.v === root.getAttribute(attr))));
+  options.forEach(([v, label]) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.dataset.v = v; b.textContent = label;
+    b.addEventListener('click', () => {
+      root.setAttribute(attr, v);
+      try{ localStorage.setItem(key, v); }catch(e){}
+      paint();
+      document.querySelectorAll('.mark').forEach(m => m.className = 'mark');
+    });
+    host.appendChild(b);
+  });
+  paint();
+}
+segment(document.getElementById('segStyle'), STYLES, 'data-style', 'qp-style');
+segment(document.getElementById('segMotion'), MOTIONS, 'data-motion', 'qp-motion');
 </script>
 </body>
 </html>

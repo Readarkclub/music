@@ -6,14 +6,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Blue Hour — a nocturne for piano</title>
 <style>
+  /* ── Nocturne — the default look: the piece played in a dark room ─────── */
   :root{
     --ink:#080B16; --ink-2:#121828; --edge:#212A45; --line:#2E395C;
     --silt:#818CB4; --pale:#E9EBF5; --accent:#E0A458;
     --pnoL:#E0A458; --pnoR:#F2CE94; --vibes:#93D2E2; --clar:#8DC2A2;
     --cello:#8E9BC0; --viola:#B79AD6; --bass:#5E7CA8; --air:#66739E; --pad:#39436E;
+    --key-w:#222C4E; --key-we:#2C365A; --key-b:#06080F; --key-be:#1A2238; --faint:#212A45;
     --serif:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
     --mono:'SF Mono','JetBrains Mono',Menlo,Consolas,'Liberation Mono',monospace;
+    --display:var(--serif); --label:var(--mono);
+    --h1-style:italic; --h1-weight:400; --h1-track:-.01em;
+    --glow:20px; --mark-fill:radial-gradient(circle,var(--kc) 0%,transparent 62%);
+    --mark-border:0 solid transparent;
   }
+
+  /* ── Classical — the packaged design system, on paper ─────────────────── */
+  :root[data-style="classical"]{
+    --ink:#F3F2F2; --ink-2:#EAE9E9; --edge:#D7D3D3; --line:#BAB6B6;
+    --silt:#605D5D; --pale:#201F1D; --accent:#B68235;
+    --pnoL:#A06F24; --pnoR:#C28D41; --vibes:#3F7C8C; --clar:#4C7A55;
+    --cello:#4A5A86; --viola:#6F4F86; --bass:#3D5570; --air:#8A8686; --pad:#A8A4A4;
+    --key-w:#FBFAF9; --key-we:#C9C5C5; --key-b:#2D2B2B; --key-be:#1A1919; --faint:#9B9797;
+    --serif:'Lora','Iowan Old Style','Palatino Linotype',Georgia,serif;
+    --display:'Cormorant Garamond','EB Garamond',Garamond,'Palatino Linotype',Georgia,serif;
+    --label:var(--serif);
+    --h1-style:normal; --h1-weight:300; --h1-track:-.015em;
+    /* the system draws with strokes, not fills — so marks become rings here */
+    --glow:0px; --mark-fill:none; --mark-border:1px solid var(--kc);
+  }
+  :root[data-style="classical"] .credit,
+  :root[data-style="classical"] footer{text-align:justify;hyphens:auto;text-wrap:pretty}
+  :root[data-style="classical"] .k.lit{box-shadow:none}
+  .where,.val,table.grid,.prefl,.eyebrow,.rule span,.diag,.seg button{
+    font-variant-numeric:tabular-nums}
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{background:var(--ink);color:var(--pale);font-family:var(--serif);min-height:100vh;
@@ -22,55 +48,90 @@
   .sheet{width:100%;max-width:920px}
 
   nav.top{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-    font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    font-family:var(--label);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
     color:var(--silt);margin:0 0 clamp(22px,4vw,38px)}
   nav.top a{color:var(--silt);text-decoration:none;border-bottom:1px solid transparent;
     transition:color .2s,border-color .2s}
   nav.top a:hover{color:var(--accent);border-color:var(--accent)}
 
-  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;
+  .eyebrow{font-family:var(--label);font-size:11px;letter-spacing:.22em;
     text-transform:uppercase;color:var(--silt);margin:0}
-  h1{font-style:italic;font-weight:400;font-size:clamp(38px,7vw,64px);line-height:.95;
-    margin:10px 0 0;letter-spacing:-.01em}
+  h1{font-family:var(--display);font-style:var(--h1-style);font-weight:var(--h1-weight);
+    font-size:clamp(38px,7vw,64px);line-height:.95;margin:10px 0 0;letter-spacing:var(--h1-track)}
   .credit{margin:14px 0 0;font-size:15px;color:var(--silt);max-width:52ch;line-height:1.55}
   .credit b{color:var(--pale);font-weight:400}
 
+  /* ---- look and motion switches ---- */
+  .prefs{display:flex;flex-wrap:wrap;gap:clamp(14px,3vw,32px);align-items:center;
+    margin:0 0 clamp(20px,3.5vw,34px);padding:0 0 15px;border-bottom:1px solid var(--edge)}
+  .pref{display:flex;align-items:center;gap:11px}
+  .prefl{font-family:var(--label);font-size:10px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--silt)}
+  .seg{display:flex;border:1px solid var(--edge);border-radius:999px;overflow:hidden}
+  .seg button{font-family:var(--label);font-size:10.5px;letter-spacing:.13em;
+    text-transform:uppercase;background:transparent;border:0;border-left:1px solid var(--edge);
+    color:var(--silt);padding:7px 13px;cursor:pointer;transition:color .2s,background .2s}
+  .seg button:first-child{border-left:0}
+  .seg button:hover{color:var(--accent)}
+  .seg button[aria-pressed="true"]{color:var(--accent);
+    background:color-mix(in srgb,var(--accent) 13%,transparent)}
+  .seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
   /* ---- keyboard ---- */
   .kwrap{margin:clamp(26px,4vw,42px) 0 0;border-top:1px solid var(--edge);padding-top:18px}
-  .halo{position:relative;height:34px}
-  .bloom{position:absolute;top:50%;width:70px;height:70px;margin:-35px 0 0 -35px;
-    border-radius:50%;pointer-events:none;opacity:0;
-    background:radial-gradient(circle,var(--kc,#E0A458) 0%,transparent 62%)}
-  .bloom.go{animation:bloom 2.1s cubic-bezier(.15,.7,.3,1) forwards}
-  @keyframes bloom{0%{opacity:.7;transform:scale(.22)}100%{opacity:0;transform:scale(1.35)}}
+  /* the strip above the keys, where struck notes go once they have sounded */
+  .halo{position:relative;height:clamp(58px,9vw,94px);overflow:hidden;
+    -webkit-mask-image:linear-gradient(to top,#000 58%,transparent);
+    mask-image:linear-gradient(to top,#000 58%,transparent)}
+  .mark{position:absolute;bottom:0;pointer-events:none;opacity:0;border-radius:50%}
+
+  /* bloom — a glow lifting off the key */
+  .mark.m-bloom{width:70px;height:70px;margin:0 0 -32px -35px;
+    background:var(--mark-fill);border:var(--mark-border);
+    animation:m-bloom 2.1s cubic-bezier(.15,.7,.3,1) forwards}
+  @keyframes m-bloom{0%{opacity:.7;transform:scale(.22)}100%{opacity:0;transform:scale(1.35)}}
+
+  /* ripple — a ring opening out from the key */
+  .mark.m-ripple{width:26px;height:26px;margin:0 0 -13px -13px;
+    border:1.5px solid var(--kc);
+    animation:m-ripple 1.9s cubic-bezier(.1,.6,.25,1) forwards}
+  @keyframes m-ripple{0%{opacity:.9;transform:scale(.25)}100%{opacity:0;transform:scale(3.6)}}
+
+  /* trails — every part leaves a mark that drifts up, so the strip becomes a
+     slow piano roll of the last few seconds */
+  .mark.m-trails{--a:.85;width:7px;height:7px;margin:0 0 0 -3.5px;background:var(--kc);
+    animation:m-trails 3.4s linear forwards}
+  .mark.m-trails.faint{--a:.45;width:4px;height:4px;margin-left:-2px}
+  @keyframes m-trails{0%{opacity:var(--a);bottom:1px}100%{opacity:0;bottom:100%}}
+
   .kb{position:relative;height:clamp(72px,12vw,108px);width:100%}
   .k{position:absolute;top:0;border-radius:0 0 3px 3px;
     transition:background .55s ease,box-shadow .55s ease}
-  .k.w{bottom:0;background:#222C4E;border:1px solid #2C365A;border-top:0}
-  .k.b{height:63%;background:#06080F;border:1px solid #1A2238;border-top:0;z-index:2}
-  .k.lit{background:var(--kc);box-shadow:0 0 20px -3px var(--kc);
+  .k.w{bottom:0;background:var(--key-w);border:1px solid var(--key-we);border-top:0}
+  .k.b{height:63%;background:var(--key-b);border:1px solid var(--key-be);border-top:0;z-index:2}
+  .k.lit{background:var(--kc);box-shadow:0 0 var(--glow) -3px var(--kc);
     transition:background .05s linear,box-shadow .05s linear}
-  .kbnote{font-family:var(--mono);font-size:10px;letter-spacing:.16em;
-    text-transform:uppercase;color:var(--edge);margin:10px 0 0}
+  .kbnote{font-family:var(--label);font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--faint);margin:10px 0 0}
 
   /* ---- transport ---- */
   .bay{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(14px,2.5vw,26px);margin:22px 0 0}
-  button.play{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+  button.play{font-family:var(--label);font-size:12px;letter-spacing:.2em;text-transform:uppercase;
     background:transparent;color:var(--pale);border:1px solid var(--line);border-radius:999px;
     padding:13px 30px;cursor:pointer;transition:border-color .25s,color .25s}
   button.play:hover{border-color:var(--accent);color:var(--accent)}
   button.play:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-  .where{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--silt)}
+  .where{font-family:var(--label);font-size:12px;letter-spacing:.1em;color:var(--silt)}
   .where b{color:var(--pale);font-weight:400}
-  .movement{font-family:var(--serif);font-style:italic;font-size:19px;color:var(--pale)}
-  .breath{margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.2em;
+  .movement{font-family:var(--display);font-style:italic;font-size:19px;color:var(--pale)}
+  .breath{margin-left:auto;font-family:var(--label);font-size:11px;letter-spacing:.2em;
     text-transform:uppercase;color:var(--silt);opacity:.35;transition:opacity 1.8s ease}
   .breath.on{opacity:1}
 
   .knobs{display:flex;flex-wrap:wrap;gap:clamp(14px,2.5vw,30px);align-items:center;
     margin:18px 0 0;padding:16px 0 0;border-top:1px solid var(--edge)}
   .knob{display:flex;align-items:center;gap:10px}
-  .knob label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+  .knob label{font-family:var(--label);font-size:11px;letter-spacing:.16em;
     text-transform:uppercase;color:var(--silt)}
   input[type=range]{-webkit-appearance:none;appearance:none;background:transparent;
     width:clamp(84px,14vw,140px);cursor:pointer}
@@ -81,21 +142,21 @@
   input[type=range]::-moz-range-thumb{width:12px;height:12px;border:0;border-radius:50%;
     background:var(--accent)}
   input[type=range]:focus-visible{outline:2px solid var(--accent);outline-offset:6px}
-  .val{font-family:var(--mono);font-size:12px;color:var(--pale);min-width:5ch}
+  .val{font-family:var(--label);font-size:12px;color:var(--pale);min-width:5ch}
   .check{display:flex;align-items:center;gap:8px;cursor:pointer}
   .check input{accent-color:var(--accent);width:14px;height:14px;cursor:pointer}
 
   /* ---- score map ---- */
   .score{margin:clamp(26px,4vw,42px) 0 0}
   .scorehead{display:flex;justify-content:space-between;align-items:baseline;
-    font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    font-family:var(--label);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
     color:var(--silt);margin-bottom:14px}
   .prow{display:flex;align-items:center;gap:12px;margin-bottom:5px}
-  .pname{font-family:var(--mono);font-size:10px;letter-spacing:.1em;width:70px;flex:none;
+  .pname{font-family:var(--label);font-size:10px;letter-spacing:.1em;width:70px;flex:none;
     text-align:left;background:none;border:0;padding:3px 0;color:var(--pale);cursor:pointer;
     transition:color .2s}
   .pname:hover{color:var(--accent)}
-  .prow.off .pname{color:var(--edge);text-decoration:line-through}
+  .prow.off .pname{color:var(--faint);text-decoration:line-through}
   .pname:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .cells{display:flex;gap:1px;flex:1;min-width:0}
   .cell{flex:1;height:11px;border-radius:1px;background:var(--ink-2);transition:background .25s}
@@ -103,31 +164,31 @@
   .prow.off .cell.on{background:var(--edge)}
   .cell.at{background:var(--pale)}
   .rule{position:relative;height:22px;margin:8px 0 0 82px}
-  .rule span{position:absolute;top:0;font-family:var(--mono);font-size:9px;letter-spacing:.12em;
+  .rule span{position:absolute;top:0;font-family:var(--label);font-size:9px;letter-spacing:.12em;
     text-transform:uppercase;color:var(--silt);white-space:nowrap;
     padding-left:5px;border-left:1px solid var(--edge)}
-  .hint{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--silt);
+  .hint{font-family:var(--label);font-size:11px;letter-spacing:.08em;color:var(--silt);
     margin:14px 0 0;line-height:1.7}
   .hint b{color:var(--pale);font-weight:400}
 
   /* ---- current bar ---- */
   .barwrap{margin:clamp(24px,4vw,40px) 0 0}
   .barhead{display:flex;justify-content:space-between;align-items:baseline;
-    font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    font-family:var(--label);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
     color:var(--silt);margin-bottom:12px}
   table.grid{border-collapse:collapse;width:100%;table-layout:fixed;
-    font-family:var(--mono);font-size:13px}
+    font-family:var(--label);font-size:13px}
   table.grid td{padding:6px 0;text-align:center;color:var(--line);
     transition:color .35s ease,background .35s ease}
   table.grid td.lbl{text-align:left;width:6ch;color:var(--silt);font-size:10px;letter-spacing:.14em}
   table.grid td.here{background:var(--ink-2);color:var(--pale)}
   table.grid td.now{color:var(--accent)}
-  table.grid tr.beat td{padding:2px 0;font-size:9px;letter-spacing:.1em;color:var(--edge)}
-  .saying{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--silt);
+  table.grid tr.beat td{padding:2px 0;font-size:9px;letter-spacing:.1em;color:var(--faint)}
+  .saying{font-family:var(--label);font-size:11px;letter-spacing:.12em;color:var(--silt);
     margin-top:12px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
   .diag{margin:20px 0 0;padding:14px 0 0;border-top:1px solid var(--edge);
-    font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--silt);
+    font-family:var(--label);font-size:11px;letter-spacing:.1em;color:var(--silt);
     display:flex;align-items:center;gap:14px;flex-wrap:wrap}
   .meter{position:relative;flex:1;min-width:110px;height:3px;background:var(--edge);
     border-radius:2px;overflow:hidden}
@@ -144,14 +205,35 @@
     table.grid{font-size:11px}
   }
   @media (prefers-reduced-motion:reduce){
-    .bloom.go{animation:none}*{transition-duration:.01ms !important}
+    .mark{animation:none !important}*{transition-duration:.01ms !important}
   }
 </style>
+<script>
+/* Read the saved look and motion before first paint, so switching pages or
+   reloading never flashes the other theme. Shared across every page here. */
+(function(){
+  var d = document.documentElement, s = null, m = null;
+  try{ s = localStorage.getItem('qp-style'); m = localStorage.getItem('qp-motion'); }catch(e){}
+  d.setAttribute('data-style', s === 'classical' ? 'classical' : 'nocturne');
+  if(!m){
+    var quiet = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    m = quiet ? 'still' : 'bloom';
+  }
+  d.setAttribute('data-motion', m);
+})();
+</script>
 </head>
 <body>
 <div class="sheet">
 
   <nav class="top"><a href="index.html">&larr; All pieces</a><a href="still-water.html">Still Water &rarr;</a></nav>
+
+  <div class="prefs">
+    <div class="pref"><span class="prefl">Look</span>
+      <div class="seg" id="segStyle" role="group" aria-label="Design style"></div></div>
+    <div class="pref"><span class="prefl">Motion</span>
+      <div class="seg" id="segMotion" role="group" aria-label="Motion effect"></div></div>
+  </div>
 
   <p class="eyebrow">Nocturne · D♭ major · 4/4 · 106 bars · about seven and a half minutes</p>
   <h1>Blue Hour</h1>
@@ -814,12 +896,14 @@ const keyEl = {}, keyX = {}, keyTimer = {};
     kbEl.appendChild(d); keyEl[m] = d; keyX[m] = below*w;
   }
 })();
-const blooms = [];
-for(let i=0;i<10;i++){
-  const b = document.createElement('div');
-  b.className = 'bloom'; haloEl.appendChild(b); blooms.push(b);
+/* One pool of marks, recycled round-robin. Which animation they get — and
+   whether the quieter parts get one at all — is the motion setting. */
+const POOL = [];
+for(let i=0;i<40;i++){
+  const d = document.createElement('div');
+  d.className = 'mark'; haloEl.appendChild(d); POOL.push(d);
 }
-let bloomAt = 0;
+let poolAt = 0;
 function litKey(midi, colour, strong){
   const m = midi < KLO || midi > KHI ? fold(midi, KLO, KLO+11) : midi;
   const el = keyEl[m];
@@ -828,11 +912,17 @@ function litKey(midi, colour, strong){
   el.classList.add('lit');
   clearTimeout(keyTimer[m]);
   keyTimer[m] = setTimeout(() => el.classList.remove('lit'), strong ? 1200 : 800);
-  if(!strong) return;
-  const b = blooms[bloomAt++ % blooms.length];
-  b.style.setProperty('--kc', colour);
-  b.style.left = keyX[m] + '%';
-  b.classList.remove('go'); void b.offsetWidth; b.classList.add('go');
+
+  const mode = document.documentElement.getAttribute('data-motion');
+  if(mode === 'still') return;
+  if(mode !== 'trails' && !strong) return;   // only trails follows every part
+  const d = POOL[poolAt++ % POOL.length];
+  d.className = 'mark';                      // restart the animation from zero
+  void d.offsetWidth;
+  d.style.setProperty('--kc', colour);
+  d.style.left = keyX[m] + '%';
+  d.classList.add('m-' + mode);
+  if(!strong) d.classList.add('faint');
 }
 
 /* ==================== score map ==================== */
@@ -899,8 +989,12 @@ drawGrid(0, -1);
 const $chord=document.getElementById('chord'), $bar=document.getElementById('bar');
 const $secn=document.getElementById('secname'), $mv2=document.getElementById('movement');
 const $brth=document.getElementById('breath'), $pat=document.getElementById('patname');
-const COLOUR = {}; PARTS.forEach(p => COLOUR[p.id] = getComputedStyle(document.documentElement)
-  .getPropertyValue('--'+p.id).trim() || '#E0A458');
+const COLOUR = {};
+function readColours(){
+  const cs = getComputedStyle(document.documentElement);
+  PARTS.forEach(p => COLOUR[p.id] = cs.getPropertyValue('--'+p.id).trim() || '#E0A458');
+}
+readColours();
 let lastBar=-1, lastTitle='Dusk';
 
 function paint(e){
@@ -966,6 +1060,37 @@ $room.addEventListener('input', () => {
 });
 document.addEventListener('keydown', ev => {
   if(ev.code==='Space' && ev.target.tagName!=='INPUT'){ ev.preventDefault(); $play.click(); }
+});
+
+/* ==================== look and motion ====================
+   Two of these are pure CSS — the style attribute swaps a token block. Motion
+   picks which animation a struck key hands to the mark pool above the keys. */
+const STYLES = [['nocturne','Nocturne'], ['classical','Classical']];
+const MOTIONS = [['bloom','Bloom'], ['ripple','Ripple'], ['trails','Trails'], ['still','Still']];
+const root = document.documentElement;
+
+function segment(host, options, attr, key, after){
+  const paint = () => host.querySelectorAll('button').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.v === root.getAttribute(attr))));
+  options.forEach(([v, label]) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.dataset.v = v; b.textContent = label;
+    b.addEventListener('click', () => {
+      root.setAttribute(attr, v);
+      try{ localStorage.setItem(key, v); }catch(e){}
+      paint();
+      if(after) after(v);
+    });
+    host.appendChild(b);
+  });
+  paint();
+}
+segment(document.getElementById('segStyle'), STYLES, 'data-style', 'qp-style', () => {
+  readColours();                       // the parts are tinted differently per look
+  document.querySelectorAll('.mark').forEach(m => m.className = 'mark');
+});
+segment(document.getElementById('segMotion'), MOTIONS, 'data-motion', 'qp-motion', () => {
+  document.querySelectorAll('.mark').forEach(m => m.className = 'mark');
 });
 </script>
 </body>
