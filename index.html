@@ -5,58 +5,15 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%23080B16%22%2F%3E%3Cg%20fill%3D%22%23E0A458%22%3E%3Crect%20x%3D%226%22%20y%3D%2218%22%20width%3D%224%22%20height%3D%228%22%20rx%3D%221.5%22%20opacity%3D%22.55%22%2F%3E%3Crect%20x%3D%2214%22%20y%3D%2210%22%20width%3D%224%22%20height%3D%2216%22%20rx%3D%221.5%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2215%22%20width%3D%224%22%20height%3D%2211%22%20rx%3D%221.5%22%20opacity%3D%22.7%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Quiet Pieces — music that plays itself in the browser</title>
+<link rel="stylesheet" href="design.css">
+<script src="design.js"></script>
 <style>
-  /* ── Nocturne — the default look ──────────────────────────────────────── */
-  :root{
-    --ink:#080B16; --ink-2:#121828; --edge:#212A45; --line:#2E395C;
-    --silt:#818CB4; --pale:#E9EBF5; --accent:#E0A458; --faint:#212A45;
-    --wash:rgba(255,255,255,.028); --arc-alpha:.28; --arc-alpha-hi:.72;
-    --serif:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
-    --mono:'SF Mono','JetBrains Mono',Menlo,Consolas,'Liberation Mono',monospace;
-    --display:var(--serif); --label:var(--mono);
-    --h1-style:italic; --h1-weight:400; --h1-track:-.01em;
-  }
-
-  /* ── Classical — the packaged design system, on paper ─────────────────── */
-  :root[data-style="classical"]{
-    --ink:#F3F2F2; --ink-2:#EAE9E9; --edge:#D7D3D3; --line:#BAB6B6;
-    --silt:#605D5D; --pale:#201F1D; --accent:#B68235; --faint:#9B9797;
-    --wash:rgba(32,31,29,.035); --arc-alpha:.34; --arc-alpha-hi:.8;
-    --serif:'Lora','Iowan Old Style','Palatino Linotype',Georgia,serif;
-    --display:'Cormorant Garamond','EB Garamond',Garamond,'Palatino Linotype',Georgia,serif;
-    --label:var(--serif);
-    --h1-style:normal; --h1-weight:300; --h1-track:-.015em;
-  }
-  :root[data-style="classical"] .credit,
-  :root[data-style="classical"] .pblurb,
-  :root[data-style="classical"] .note p{text-align:justify;hyphens:auto;text-wrap:pretty}
-  .eyebrow,.pline,.pnum,.pgo,.prefl{font-variant-numeric:tabular-nums}
-
-  /* ---- look switch ---- */
-  .prefs{display:flex;flex-wrap:wrap;gap:14px;align-items:center;
-    margin:0 0 clamp(26px,4vw,40px);padding:0 0 18px;border-bottom:1px solid var(--edge)}
-  .prefl{font-family:var(--label);font-size:11px;letter-spacing:.2em;
-    text-transform:uppercase;color:var(--silt)}
-  .seg{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
-  .seg button{display:flex;align-items:center;gap:8px;font-family:var(--label);font-size:12px;
-    letter-spacing:.12em;text-transform:uppercase;background:transparent;border:0;
-    border-left:1px solid var(--line);color:var(--silt);padding:9px 16px;cursor:pointer;
-    transition:color .2s,background .2s}
-  .seg button:first-child{border-left:0}
-  .seg button:hover{color:var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent)}
-  .seg button[aria-pressed="true"]{color:var(--accent);
-    background:color-mix(in srgb,var(--accent) 15%,transparent)}
-  .seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-  /* a chip of each design's actual ground, so the choice is legible before you take it */
-  .chip{width:13px;height:13px;border-radius:3px;flex:none;position:relative}
-  .chip::after{content:'';position:absolute;right:2px;bottom:2px;width:4px;height:4px;
-    border-radius:50%;background:var(--chip-ink)}
-  .chip-nocturne{background:#0A1219;box-shadow:inset 0 0 0 1px #2E395C;--chip-ink:#E0A458}
-  .chip-classical{background:#F3F2F2;box-shadow:inset 0 0 0 1px #BAB6B6;--chip-ink:#B68235}
-  /* the design switch is the loud one; motion sits a step quieter beside it */
-  .pref-quiet .seg button{font-size:10.5px;letter-spacing:.13em;padding:7px 12px}
-  .pref-quiet .seg{border-color:var(--edge)}
-  .pref-quiet .seg button{border-left-color:var(--edge)}
+  /* The shelf only adds what is its own; both designs and the Design switch
+     come from design.css, linked above. */
+  :root{ --arc-alpha:.28; --arc-alpha-hi:.72 }
+  :root[data-style="classical"]{ --arc-alpha:.34; --arc-alpha-hi:.8 }
+  .eyebrow,.pline,.pnum,.pgo{font-variant-numeric:tabular-nums}
+  .prefs{margin:0 0 clamp(26px,4vw,40px);padding:0 0 18px;border-bottom:1px solid var(--edge)}
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{background:var(--ink);color:var(--pale);font-family:var(--serif);min-height:100vh;
@@ -114,38 +71,21 @@
 
   @media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important}}
 </style>
-<script>
-/* Read the saved look and motion before first paint, so switching pages or
-   reloading never flashes the other theme. Shared across every page here. */
-(function(){
-  var d = document.documentElement, s = null, m = null;
-  try{ s = localStorage.getItem('qp-style'); m = localStorage.getItem('qp-motion'); }catch(e){}
-  d.setAttribute('data-style', s === 'classical' ? 'classical' : 'nocturne');
-  if(!m){
-    var quiet = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    m = quiet ? 'still' : 'bloom';
-  }
-  d.setAttribute('data-motion', m);
-})();
-</script>
 </head>
 <body>
 <div class="sheet">
 
-  <div class="prefs">
-    <span class="prefl">Design</span>
-    <div class="seg" id="segStyle" role="group" aria-label="Page design"></div>
-  </div>
+  <div class="prefs" data-quiet-switch="design"></div>
 
   <p class="eyebrow">readarkclub · music</p>
   <h1>Quiet Pieces</h1>
-  <p class="credit">Long, slow pieces written to be listened to rather than played at.
+  <p class="credit justified">Long, slow pieces written to be listened to rather than played at.
   Each one is a single HTML file with no dependencies, no build step and no network calls —
   every sound is <b>synthesised in your browser</b> the moment you press play. Pick a design above, then pick a piece.</p>
 
   <div class="shelf" id="shelf"></div>
 
-  <section class="note">
+  <section class="note justified">
     <h2>How to listen</h2>
     <p>Start quiet. Every piece defaults to a volume lower than feels right, which is
     deliberate — turn the room down before you turn the music up. Then leave it alone.
@@ -154,18 +94,22 @@
     <p>Each player shows its own score as it goes. Click any part name to mute it, and the
     piece keeps playing without it — <em>which is how you turn any of these into something
     to play along with.</em></p>
-    <p>Both players also carry a <b>Motion</b> switch next to the design chooser: what a note leaves
+    <p>Every player also carries a <b>Motion</b> switch next to the design chooser: what a note leaves
     behind after it sounds, from a glow to a slow piano roll of the last few seconds, or
     nothing at all. Whatever you pick here follows you onto every page.</p>
   </section>
 
-  <section class="note">
+  <section class="note justified">
     <h2>Adding a piece</h2>
     <p>Copy the closest existing player to <code>your-piece.html</code>, rewrite the three
     data tables near the top of its script — chords, themes, form — and add one entry to the
     <code>PIECES</code> array in <code>index.html</code>. The score is data, not code; nothing
-    below those tables needs to change unless you want a new instrument. Both looks come
-    along for free, so long as your colours stay in the token blocks at the top of the file.</p>
+    below those tables needs to change unless you want a new instrument.</p>
+    <p>Both designs and all four motion effects come along on their own. They live in
+    <code>design.css</code> and <code>design.js</code>, which every page shares, so a piece
+    only declares a colour per part in each design and says where on its own instrument a
+    note just sounded. Nothing about the designs is copied into a piece, so they cannot
+    drift apart.</p>
     <p>Source: <a href="https://github.com/readarkclub/music">github.com/readarkclub/music</a>.</p>
   </section>
 
@@ -177,6 +121,18 @@
 /* One entry per piece. `arc` is the shape of the piece section by section —
    purely decorative, but it tells you where the loud bit is before you click. */
 const PIECES = [
+  {
+    slug : 'evensong',
+    title: 'Evensong',
+    line : 'Ensemble · D major · 3/4 · 106 bars · about five and a half minutes',
+    parts: 'Violin I & II · viola · cello · bass · harp · celesta · horn · pad',
+    tint : '#D9A86A', tintLight: '#B0803A',
+    blurb: 'A violin tune over a small ensemble, in three. It is stated once plainly, ' +
+           'opens into F major, comes apart into a canon three voices deep, returns in ' +
+           'octaves, and is left alone on the open D. <b>Mute Violin I to play it ' +
+           'yourself.</b>',
+    arc  : [.20,.28,.38,.48,.52,.60,.58,.68,.96,.92,.46,.30,.16]
+  },
   {
     slug : 'blue-hour',
     title: 'Blue Hour',
@@ -230,40 +186,21 @@ PIECES.forEach((p, i) => {
     '<p class="pline">' + p.line + '</p>' +
     '<div class="arc" aria-hidden="true">' + curve(p.arc, 64).map(v =>
         '<i style="height:' + (v*100).toFixed(1) + '%"></i>').join('') + '</div>' +
-    '<p class="pblurb">' + p.blurb + '</p>' +
+    '<p class="pblurb justified">' + p.blurb + '</p>' +
     '<p class="pparts">' + p.parts + '</p>';
   shelf.appendChild(a);
 });
 
-/* ==================== look ====================
-   A pure-CSS swap: the attribute picks a token block. The per-piece tints are
-   the one thing CSS can't reach, so they're re-applied here. */
-const STYLES = [['nocturne','Nocturne'], ['classical','Classical']];
-const root = document.documentElement;
-const seg = document.getElementById('segStyle');
-
+/* ==================== design ====================
+   design.js builds and stores the switch. The per-piece tints are the one
+   thing CSS cannot reach, so they are re-applied whenever it moves. */
 function applyTints(){
-  const light = root.getAttribute('data-style') === 'classical';
+  const light = Quiet.style() === 'classical';
   cards.forEach((a, i) => a.style.setProperty('--tint',
     light ? (PIECES[i].tintLight || PIECES[i].tint) : PIECES[i].tint));
 }
-function paintSeg(){
-  seg.querySelectorAll('button').forEach(b =>
-    b.setAttribute('aria-pressed', String(b.dataset.v === root.getAttribute('data-style'))));
-}
-STYLES.forEach(([v, label]) => {
-  const b = document.createElement('button');
-  b.type = 'button'; b.dataset.v = v;
-  b.innerHTML = '<i class="chip chip-' + v + '"></i>';
-  b.appendChild(document.createTextNode(label));
-  b.addEventListener('click', () => {
-    root.setAttribute('data-style', v);
-    try{ localStorage.setItem('qp-style', v); }catch(e){}
-    paintSeg(); applyTints();
-  });
-  seg.appendChild(b);
-});
-paintSeg(); applyTints();
+Quiet.onChange(applyTints);
+applyTints();
 </script>
 </body>
 </html>

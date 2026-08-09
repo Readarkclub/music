@@ -5,41 +5,26 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%23080B16%22%2F%3E%3Cg%3E%3Crect%20x%3D%225%22%20y%3D%228%22%20width%3D%2222%22%20height%3D%2217%22%20rx%3D%222%22%20fill%3D%22%23222C4E%22%2F%3E%3Crect%20x%3D%2212.3%22%20y%3D%228%22%20width%3D%222.6%22%20height%3D%2210.5%22%20fill%3D%22%2306080F%22%2F%3E%3Crect%20x%3D%2217.6%22%20y%3D%228%22%20width%3D%222.6%22%20height%3D%2210.5%22%20fill%3D%22%2306080F%22%2F%3E%3Crect%20x%3D%2221.5%22%20y%3D%228%22%20width%3D%225.5%22%20height%3D%2217%22%20rx%3D%221.5%22%20fill%3D%22%23E0A458%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Blue Hour — a nocturne for piano</title>
+<link rel="stylesheet" href="design.css">
+<script src="design.js"></script>
 <style>
-  /* ── Nocturne — the default look: the piece played in a dark room ─────── */
+  /* Ground, pigments and mark geometry for this piece. Everything else —
+     both designs, the switches, the four motion effects — comes from
+     design.css, which is linked above so these override it. */
   :root{
-    --ink:#080B16; --ink-2:#121828; --edge:#212A45; --line:#2E395C;
-    --silt:#818CB4; --pale:#E9EBF5; --accent:#E0A458;
     --pnoL:#E0A458; --pnoR:#F2CE94; --vibes:#93D2E2; --clar:#8DC2A2;
     --cello:#8E9BC0; --viola:#B79AD6; --bass:#5E7CA8; --air:#66739E; --pad:#39436E;
-    --key-w:#222C4E; --key-we:#2C365A; --key-b:#06080F; --key-be:#1A2238; --faint:#212A45;
-    --serif:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
-    --mono:'SF Mono','JetBrains Mono',Menlo,Consolas,'Liberation Mono',monospace;
-    --display:var(--serif); --label:var(--mono);
-    --h1-style:italic; --h1-weight:400; --h1-track:-.01em;
-    --glow:20px; --mark-fill:radial-gradient(circle,var(--kc) 0%,transparent 62%);
-    --mark-border:0 solid transparent;
+    --key-w:#222C4E; --key-we:#2C365A; --key-b:#06080F; --key-be:#1A2238;
+    /* the keys are a horizontal instrument: marks rise off them */
+    --qm-trail-y:calc(-1 * clamp(58px,9vw,94px));
   }
-
-  /* ── Classical — the packaged design system, on paper ─────────────────── */
   :root[data-style="classical"]{
-    --ink:#F3F2F2; --ink-2:#EAE9E9; --edge:#D7D3D3; --line:#BAB6B6;
-    --silt:#605D5D; --pale:#201F1D; --accent:#B68235;
     --pnoL:#B0803A; --pnoR:#A9714F; --vibes:#7D93A3; --clar:#5F8F83;
     --cello:#6B7F9B; --viola:#8B6F92; --bass:#7D8250; --air:#9A938B; --pad:#8E8880;
-    --key-w:#FBFAF9; --key-we:#C9C5C5; --key-b:#2D2B2B; --key-be:#1A1919; --faint:#9B9797;
-    --serif:'Lora','Iowan Old Style','Palatino Linotype',Georgia,serif;
-    --display:'Cormorant Garamond','EB Garamond',Garamond,'Palatino Linotype',Georgia,serif;
-    --label:var(--serif);
-    --h1-style:normal; --h1-weight:300; --h1-track:-.015em;
-    /* the system draws with strokes, not fills — so marks become rings here */
-    --glow:0px; --mark-fill:none; --mark-border:1px solid var(--kc);
+    --key-w:#FBFAF9; --key-we:#C9C5C5; --key-b:#2D2B2B; --key-be:#1A1919;
   }
-  :root[data-style="classical"] .credit,
-  :root[data-style="classical"] footer{text-align:justify;hyphens:auto;text-wrap:pretty}
   :root[data-style="classical"] .k.lit{box-shadow:none}
-  .where,.val,table.grid,.prefl,.eyebrow,.rule span,.diag,.seg button{
-    font-variant-numeric:tabular-nums}
+  .where,.val,table.grid,.eyebrow,.rule span,.diag{font-variant-numeric:tabular-nums}
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{background:var(--ink);color:var(--pale);font-family:var(--serif);min-height:100vh;
@@ -61,32 +46,6 @@
   .credit{margin:14px 0 0;font-size:15px;color:var(--silt);max-width:52ch;line-height:1.55}
   .credit b{color:var(--pale);font-weight:400}
 
-  /* ---- look and motion switches ---- */
-  .prefs{display:flex;flex-wrap:wrap;gap:clamp(14px,3vw,32px);align-items:center;
-    margin:0 0 clamp(20px,3.5vw,34px);padding:0 0 15px;border-bottom:1px solid var(--edge)}
-  .pref{display:flex;align-items:center;gap:11px}
-  .prefl{font-family:var(--label);font-size:11px;letter-spacing:.2em;
-    text-transform:uppercase;color:var(--silt)}
-  .seg{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
-  .seg button{display:flex;align-items:center;gap:8px;font-family:var(--label);font-size:12px;
-    letter-spacing:.12em;text-transform:uppercase;background:transparent;border:0;
-    border-left:1px solid var(--line);color:var(--silt);padding:9px 16px;cursor:pointer;
-    transition:color .2s,background .2s}
-  .seg button:first-child{border-left:0}
-  .seg button:hover{color:var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent)}
-  .seg button[aria-pressed="true"]{color:var(--accent);
-    background:color-mix(in srgb,var(--accent) 15%,transparent)}
-  .seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-  /* a chip of each design's actual ground, so the choice is legible before you take it */
-  .chip{width:13px;height:13px;border-radius:3px;flex:none;position:relative}
-  .chip::after{content:'';position:absolute;right:2px;bottom:2px;width:4px;height:4px;
-    border-radius:50%;background:var(--chip-ink)}
-  .chip-nocturne{background:#0A1219;box-shadow:inset 0 0 0 1px #2E395C;--chip-ink:#E0A458}
-  .chip-classical{background:#F3F2F2;box-shadow:inset 0 0 0 1px #BAB6B6;--chip-ink:#B68235}
-  /* the design switch is the loud one; motion sits a step quieter beside it */
-  .pref-quiet .seg button{font-size:10.5px;letter-spacing:.13em;padding:7px 12px}
-  .pref-quiet .seg{border-color:var(--edge)}
-  .pref-quiet .seg button{border-left-color:var(--edge)}
 
   /* ---- keyboard ---- */
   .kwrap{margin:clamp(26px,4vw,42px) 0 0;border-top:1px solid var(--edge);padding-top:18px}
@@ -94,27 +53,6 @@
   .halo{position:relative;height:clamp(58px,9vw,94px);overflow:hidden;
     -webkit-mask-image:linear-gradient(to top,#000 58%,transparent);
     mask-image:linear-gradient(to top,#000 58%,transparent)}
-  .mark{position:absolute;bottom:0;pointer-events:none;opacity:0;border-radius:50%}
-
-  /* bloom — a glow lifting off the key */
-  .mark.m-bloom{width:70px;height:70px;margin:0 0 -32px -35px;
-    background:var(--mark-fill);border:var(--mark-border);
-    animation:m-bloom 2.1s cubic-bezier(.15,.7,.3,1) forwards}
-  @keyframes m-bloom{0%{opacity:.7;transform:scale(.22)}100%{opacity:0;transform:scale(1.35)}}
-
-  /* ripple — a ring opening out from the key */
-  .mark.m-ripple{width:26px;height:26px;margin:0 0 -13px -13px;
-    border:1.5px solid var(--kc);
-    animation:m-ripple 1.9s cubic-bezier(.1,.6,.25,1) forwards}
-  @keyframes m-ripple{0%{opacity:.9;transform:scale(.25)}100%{opacity:0;transform:scale(3.6)}}
-
-  /* trails — every part leaves a mark that drifts up, so the strip becomes a
-     slow piano roll of the last few seconds */
-  .mark.m-trails{--a:.85;width:7px;height:7px;margin:0 0 0 -3.5px;background:var(--kc);
-    animation:m-trails 3.4s linear forwards}
-  .mark.m-trails.faint{--a:.45;width:4px;height:4px;margin-left:-2px}
-  @keyframes m-trails{0%{opacity:var(--a);bottom:1px}100%{opacity:0;bottom:100%}}
-
   .kb{position:relative;height:clamp(72px,12vw,108px);width:100%}
   .k{position:absolute;top:0;border-radius:0 0 3px 3px;
     transition:background .55s ease,box-shadow .55s ease}
@@ -215,46 +153,24 @@
     .pname{width:56px;font-size:9px}.rule{margin-left:68px}
     table.grid{font-size:11px}
   }
-  @media (prefers-reduced-motion:reduce){
-    .mark{animation:none !important}*{transition-duration:.01ms !important}
-  }
 </style>
-<script>
-/* Read the saved look and motion before first paint, so switching pages or
-   reloading never flashes the other theme. Shared across every page here. */
-(function(){
-  var d = document.documentElement, s = null, m = null;
-  try{ s = localStorage.getItem('qp-style'); m = localStorage.getItem('qp-motion'); }catch(e){}
-  d.setAttribute('data-style', s === 'classical' ? 'classical' : 'nocturne');
-  if(!m){
-    var quiet = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    m = quiet ? 'still' : 'bloom';
-  }
-  d.setAttribute('data-motion', m);
-})();
-</script>
 </head>
 <body>
 <div class="sheet">
 
   <nav class="top"><a href="index.html">&larr; All pieces</a><a href="still-water.html">Still Water &rarr;</a></nav>
 
-  <div class="prefs">
-    <div class="pref"><span class="prefl">Design</span>
-      <div class="seg" id="segStyle" role="group" aria-label="Page design"></div></div>
-    <div class="pref pref-quiet"><span class="prefl">Motion</span>
-      <div class="seg" id="segMotion" role="group" aria-label="Motion effect"></div></div>
-  </div>
+  <div class="prefs" data-quiet-switch="design motion"></div>
 
   <p class="eyebrow">Nocturne · D♭ major · 4/4 · 106 bars · about seven and a half minutes</p>
   <h1>Blue Hour</h1>
-  <p class="credit">Piano throughout, with cello, viola, clarinet, vibraphone and bass moving in
+  <p class="credit justified">Piano throughout, with cello, viola, clarinet, vibraphone and bass moving in
   and out behind it. The theme belongs to the cello, is answered by the clarinet in A major, comes
   back through the piano's own hands at the top, and leaves the way it arrived. Mute
   <b>Piano R</b> to play the melody yourself.</p>
 
   <div class="kwrap">
-    <div class="halo" id="halo"></div>
+    <div class="halo" id="halo" data-qm-pool="40"></div>
     <div class="kb" id="kb"></div>
     <p class="kbnote">Every part shows on the keys — the colour tells you who is playing</p>
   </div>
@@ -293,7 +209,7 @@
     <span id="prep">Output</span><span class="meter"><i id="meterbar"></i></span><span class="val" id="meterval">—</span>
   </div>
 
-  <footer>
+  <footer class="justified">
     Breathe in across one bar, out across the next — at the default tempo that is seven breaths a
     minute. <em>The piece is quiet on purpose; turn the room up before you turn the volume up.</em>
     A simplified arrangement you can play on a real piano is in
@@ -907,14 +823,6 @@ const keyEl = {}, keyX = {}, keyTimer = {};
     kbEl.appendChild(d); keyEl[m] = d; keyX[m] = below*w;
   }
 })();
-/* One pool of marks, recycled round-robin. Which animation they get — and
-   whether the quieter parts get one at all — is the motion setting. */
-const POOL = [];
-for(let i=0;i<40;i++){
-  const d = document.createElement('div');
-  d.className = 'mark'; haloEl.appendChild(d); POOL.push(d);
-}
-let poolAt = 0;
 function litKey(midi, colour, strong){
   const m = midi < KLO || midi > KHI ? fold(midi, KLO, KLO+11) : midi;
   const el = keyEl[m];
@@ -923,17 +831,9 @@ function litKey(midi, colour, strong){
   el.classList.add('lit');
   clearTimeout(keyTimer[m]);
   keyTimer[m] = setTimeout(() => el.classList.remove('lit'), strong ? 1200 : 800);
-
-  const mode = document.documentElement.getAttribute('data-motion');
-  if(mode === 'still') return;
-  if(mode !== 'trails' && !strong) return;   // only trails follows every part
-  const d = POOL[poolAt++ % POOL.length];
-  d.className = 'mark';                      // restart the animation from zero
-  void d.offsetWidth;
-  d.style.setProperty('--kc', colour);
-  d.style.left = keyX[m] + '%';
-  d.classList.add('m-' + mode);
-  if(!strong) d.classList.add('faint');
+  /* the strip above the keys is where a note goes once it has sounded; which
+     mark it gets there is the shared motion setting */
+  Quiet.mark(haloEl, {x:keyX[m]+'%', y:'100%', colour, faint:!strong});
 }
 
 /* ==================== score map ==================== */
@@ -1073,38 +973,10 @@ document.addEventListener('keydown', ev => {
   if(ev.code==='Space' && ev.target.tagName!=='INPUT'){ ev.preventDefault(); $play.click(); }
 });
 
-/* ==================== look and motion ====================
-   Two of these are pure CSS — the style attribute swaps a token block. Motion
-   picks which animation a struck key hands to the mark pool above the keys. */
-const STYLES = [['nocturne','Nocturne'], ['classical','Classical']];
-const MOTIONS = [['bloom','Bloom'], ['ripple','Ripple'], ['trails','Trails'], ['still','Still']];
-const root = document.documentElement;
-
-function segment(host, options, attr, key, after){
-  const paint = () => host.querySelectorAll('button').forEach(b =>
-    b.setAttribute('aria-pressed', String(b.dataset.v === root.getAttribute(attr))));
-  options.forEach(([v, label]) => {
-    const b = document.createElement('button');
-    b.type = 'button'; b.dataset.v = v;
-    if(attr === 'data-style') b.innerHTML = '<i class="chip chip-' + v + '"></i>';
-    b.appendChild(document.createTextNode(label));
-    b.addEventListener('click', () => {
-      root.setAttribute(attr, v);
-      try{ localStorage.setItem(key, v); }catch(e){}
-      paint();
-      if(after) after(v);
-    });
-    host.appendChild(b);
-  });
-  paint();
-}
-segment(document.getElementById('segStyle'), STYLES, 'data-style', 'qp-style', () => {
-  readColours();                       // the parts are tinted differently per look
-  document.querySelectorAll('.mark').forEach(m => m.className = 'mark');
-});
-segment(document.getElementById('segMotion'), MOTIONS, 'data-motion', 'qp-motion', () => {
-  document.querySelectorAll('.mark').forEach(m => m.className = 'mark');
-});
+/* ==================== design and motion ====================
+   Both switches are built and stored by design.js. The one thing that is this
+   piece's own is its pigments, which differ per design. */
+Quiet.onChange(readColours);
 </script>
 </body>
 </html>

@@ -1,0 +1,126 @@
+/* Quiet Pieces — the shared design and motion system.
+   ---------------------------------------------------------------------------
+   Every page links this file, so a new piece inherits both designs and all four
+   motion effects without copying anything. A piece supplies only two things of
+   its own: a pigment per part, and the geometry its marks should move through.
+   Load this BEFORE the page's own <style> so the page can retune any token.
+   See README.md → "Adding a piece". */
+
+
+/* ══ Nocturne — the default ground. A piece may retint it. ═════════════════ */
+:root{
+  --ink:#080B16; --ink-2:#121828; --edge:#212A45; --line:#2E395C;
+  --silt:#818CB4; --pale:#E9EBF5; --accent:#E0A458; --faint:#212A45;
+  --wash:rgba(255,255,255,.028);
+
+  --serif:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
+  --mono:'SF Mono','JetBrains Mono',Menlo,Consolas,'Liberation Mono',monospace;
+  --display:var(--serif); --label:var(--mono);
+  --h1-style:italic; --h1-weight:400; --h1-track:-.01em;
+
+  --glow:20px;                       /* how far a sounding note bleeds light */
+
+  /* Mark geometry. These are the knobs a piece turns to make the effects suit
+     its own instrument — a keyboard wants marks that rise, a fretboard wants
+     them to travel along the string. */
+  --qm-bloom-size:104px; --qm-bloom-lift:8px; --qm-bloom-rise:-34px;
+  --qm-bloom-from:.3;    --qm-bloom-to:1.18;
+  --qm-ripple-size:26px; --qm-ripple-to:3.6;
+  --qm-trail-size:7px;   --qm-trail-faint-size:4px;
+  --qm-trail-x:0px;      --qm-trail-y:-74px;
+}
+
+/* ══ Classical — the packaged design system, on paper ══════════════════════ */
+:root[data-style="classical"]{
+  --ink:#F3F2F2; --ink-2:#EAE9E9; --edge:#D7D3D3; --line:#BAB6B6;
+  --silt:#605D5D; --pale:#201F1D; --accent:#B68235; --faint:#9B9797;
+  --wash:rgba(32,31,29,.035);
+
+  --serif:'Lora','Iowan Old Style','Palatino Linotype',Georgia,serif;
+  --display:'Cormorant Garamond','EB Garamond',Garamond,'Palatino Linotype',Georgia,serif;
+  --label:var(--serif);
+  --h1-style:normal; --h1-weight:300; --h1-track:-.015em;
+
+  --glow:0px;                        /* paper does not glow */
+}
+/* The system sets running copy justified; opt a paragraph in with .justified */
+:root[data-style="classical"] .justified{text-align:justify;hyphens:auto;text-wrap:pretty}
+
+
+/* ══ The switches ═════════════════════════════════════════════════════════ */
+/* The switches sit at the top of the page with a rule under them. A page may
+   retune the spacing, but it should not have to in order to look right. */
+.prefs{display:flex;flex-wrap:wrap;gap:clamp(14px,3vw,32px);align-items:center;
+  margin:0 0 clamp(20px,3.5vw,34px);padding:0 0 15px;border-bottom:1px solid var(--edge)}
+.pref{display:flex;align-items:center;gap:11px}
+.prefl{font-family:var(--label);font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--silt);font-variant-numeric:tabular-nums}
+.seg{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.seg button{display:flex;align-items:center;gap:8px;font-family:var(--label);font-size:12px;
+  letter-spacing:.12em;text-transform:uppercase;background:transparent;border:0;
+  border-left:1px solid var(--line);color:var(--silt);padding:9px 16px;cursor:pointer;
+  font-variant-numeric:tabular-nums;transition:color .2s,background .2s}
+.seg button:first-child{border-left:0}
+.seg button:hover{color:var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent)}
+.seg button[aria-pressed="true"]{color:var(--accent);
+  background:color-mix(in srgb,var(--accent) 15%,transparent)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* a chip of each design's actual ground, so the choice reads before you take it */
+.chip{width:13px;height:13px;border-radius:3px;flex:none;position:relative}
+.chip::after{content:'';position:absolute;right:2px;bottom:2px;width:4px;height:4px;
+  border-radius:50%;background:var(--chip-ink)}
+.chip-nocturne{background:#0A1219;box-shadow:inset 0 0 0 1px #2E395C;--chip-ink:#E0A458}
+.chip-classical{background:#F3F2F2;box-shadow:inset 0 0 0 1px #BAB6B6;--chip-ink:#B68235}
+
+/* the design switch leads; motion sits a step quieter beside it */
+.pref-quiet .seg{border-color:var(--edge)}
+.pref-quiet .seg button{font-size:10.5px;letter-spacing:.13em;padding:7px 12px;
+  border-left-color:var(--edge)}
+
+
+/* ══ Motion — the mark a note leaves once it has sounded ═══════════════════
+   Marks are centred on the point they are given, so a piece only has to say
+   where on its own instrument the note happened. --kc is the part's colour and
+   is set on the mark element itself: it must be read here, in a rule that
+   applies to the mark. Routed through a :root custom property it would resolve
+   against :root, where it does not exist, and compute to nothing. */
+.qm{position:absolute;left:var(--qm-x,50%);top:var(--qm-y,100%);
+  pointer-events:none;opacity:0;border-radius:50%;transform:translate(-50%,-50%)}
+
+/* bloom — a glow lifting off the note */
+.qm-bloom{width:var(--qm-bloom-size);height:var(--qm-bloom-size);
+  background:radial-gradient(circle,var(--kc) 0%,transparent 62%);
+  animation:qm-bloom 2.2s cubic-bezier(.15,.7,.3,1) forwards}
+:root[data-style="classical"] .qm-bloom{background:none;border:1.5px solid var(--kc)}
+@keyframes qm-bloom{
+  0%{opacity:.92;
+     transform:translate(-50%,-50%) translateY(var(--qm-bloom-lift)) scale(var(--qm-bloom-from))}
+  100%{opacity:0;
+     transform:translate(-50%,-50%) translateY(var(--qm-bloom-rise)) scale(var(--qm-bloom-to))}}
+
+/* ripple — a ring opening out from the note */
+.qm-ripple{width:var(--qm-ripple-size);height:var(--qm-ripple-size);
+  border:1.5px solid var(--kc);
+  animation:qm-ripple 1.9s cubic-bezier(.1,.6,.25,1) forwards}
+@keyframes qm-ripple{
+  0%{opacity:.9;transform:translate(-50%,-50%) scale(.25)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(var(--qm-ripple-to))}}
+
+/* trails — every part leaves a mark that drifts, so the surface becomes a slow
+   roll of the last few seconds */
+.qm-trails{--a:.85;width:var(--qm-trail-size);height:var(--qm-trail-size);
+  background:var(--kc);animation:qm-trails 3.4s linear forwards}
+.qm-trails.qm-faint{--a:.45;
+  width:var(--qm-trail-faint-size);height:var(--qm-trail-faint-size)}
+@keyframes qm-trails{
+  0%{opacity:var(--a);transform:translate(-50%,-50%)}
+  100%{opacity:0;
+     transform:translate(-50%,-50%) translate(var(--qm-trail-x),var(--qm-trail-y)) scale(.45)}}
+
+/* still spawns no marks at all — see design.js */
+
+@media (prefers-reduced-motion:reduce){
+  .qm{animation:none !important}
+  *{transition-duration:.01ms !important}
+}
