@@ -25,8 +25,8 @@
   :root[data-style="classical"]{
     --ink:#F3F2F2; --ink-2:#EAE9E9; --edge:#D7D3D3; --line:#BAB6B6;
     --silt:#605D5D; --pale:#201F1D; --accent:#B68235;
-    --pnoL:#A06F24; --pnoR:#C28D41; --vibes:#3F7C8C; --clar:#4C7A55;
-    --cello:#4A5A86; --viola:#6F4F86; --bass:#3D5570; --air:#8A8686; --pad:#A8A4A4;
+    --pnoL:#B0803A; --pnoR:#A9714F; --vibes:#7D93A3; --clar:#5F8F83;
+    --cello:#6B7F9B; --viola:#8B6F92; --bass:#7D8250; --air:#9A938B; --pad:#8E8880;
     --key-w:#FBFAF9; --key-we:#C9C5C5; --key-b:#2D2B2B; --key-be:#1A1919; --faint:#9B9797;
     --serif:'Lora','Iowan Old Style','Palatino Linotype',Georgia,serif;
     --display:'Cormorant Garamond','EB Garamond',Garamond,'Palatino Linotype',Georgia,serif;
@@ -65,17 +65,28 @@
   .prefs{display:flex;flex-wrap:wrap;gap:clamp(14px,3vw,32px);align-items:center;
     margin:0 0 clamp(20px,3.5vw,34px);padding:0 0 15px;border-bottom:1px solid var(--edge)}
   .pref{display:flex;align-items:center;gap:11px}
-  .prefl{font-family:var(--label);font-size:10px;letter-spacing:.2em;
+  .prefl{font-family:var(--label);font-size:11px;letter-spacing:.2em;
     text-transform:uppercase;color:var(--silt)}
-  .seg{display:flex;border:1px solid var(--edge);border-radius:999px;overflow:hidden}
-  .seg button{font-family:var(--label);font-size:10.5px;letter-spacing:.13em;
-    text-transform:uppercase;background:transparent;border:0;border-left:1px solid var(--edge);
-    color:var(--silt);padding:7px 13px;cursor:pointer;transition:color .2s,background .2s}
+  .seg{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .seg button{display:flex;align-items:center;gap:8px;font-family:var(--label);font-size:12px;
+    letter-spacing:.12em;text-transform:uppercase;background:transparent;border:0;
+    border-left:1px solid var(--line);color:var(--silt);padding:9px 16px;cursor:pointer;
+    transition:color .2s,background .2s}
   .seg button:first-child{border-left:0}
-  .seg button:hover{color:var(--accent)}
+  .seg button:hover{color:var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent)}
   .seg button[aria-pressed="true"]{color:var(--accent);
-    background:color-mix(in srgb,var(--accent) 13%,transparent)}
+    background:color-mix(in srgb,var(--accent) 15%,transparent)}
   .seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  /* a chip of each design's actual ground, so the choice is legible before you take it */
+  .chip{width:13px;height:13px;border-radius:3px;flex:none;position:relative}
+  .chip::after{content:'';position:absolute;right:2px;bottom:2px;width:4px;height:4px;
+    border-radius:50%;background:var(--chip-ink)}
+  .chip-nocturne{background:#0A1219;box-shadow:inset 0 0 0 1px #2E395C;--chip-ink:#E0A458}
+  .chip-classical{background:#F3F2F2;box-shadow:inset 0 0 0 1px #BAB6B6;--chip-ink:#B68235}
+  /* the design switch is the loud one; motion sits a step quieter beside it */
+  .pref-quiet .seg button{font-size:10.5px;letter-spacing:.13em;padding:7px 12px}
+  .pref-quiet .seg{border-color:var(--edge)}
+  .pref-quiet .seg button{border-left-color:var(--edge)}
 
   /* ---- keyboard ---- */
   .kwrap{margin:clamp(26px,4vw,42px) 0 0;border-top:1px solid var(--edge);padding-top:18px}
@@ -163,7 +174,7 @@
   .cell.on{background:var(--pc)}
   .prow.off .cell.on{background:var(--edge)}
   .cell.at{background:var(--pale)}
-  .rule{position:relative;height:22px;margin:8px 0 0 82px}
+  .rule{position:relative;height:22px;margin:8px 0 0 82px;overflow:hidden}
   .rule span{position:absolute;top:0;font-family:var(--label);font-size:9px;letter-spacing:.12em;
     text-transform:uppercase;color:var(--silt);white-space:nowrap;
     padding-left:5px;border-left:1px solid var(--edge)}
@@ -229,9 +240,9 @@
   <nav class="top"><a href="index.html">&larr; All pieces</a><a href="still-water.html">Still Water &rarr;</a></nav>
 
   <div class="prefs">
-    <div class="pref"><span class="prefl">Look</span>
-      <div class="seg" id="segStyle" role="group" aria-label="Design style"></div></div>
-    <div class="pref"><span class="prefl">Motion</span>
+    <div class="pref"><span class="prefl">Design</span>
+      <div class="seg" id="segStyle" role="group" aria-label="Page design"></div></div>
+    <div class="pref pref-quiet"><span class="prefl">Motion</span>
       <div class="seg" id="segMotion" role="group" aria-label="Motion effect"></div></div>
   </div>
 
@@ -1074,7 +1085,9 @@ function segment(host, options, attr, key, after){
     b.setAttribute('aria-pressed', String(b.dataset.v === root.getAttribute(attr))));
   options.forEach(([v, label]) => {
     const b = document.createElement('button');
-    b.type = 'button'; b.dataset.v = v; b.textContent = label;
+    b.type = 'button'; b.dataset.v = v;
+    if(attr === 'data-style') b.innerHTML = '<i class="chip chip-' + v + '"></i>';
+    b.appendChild(document.createTextNode(label));
     b.addEventListener('click', () => {
       root.setAttribute(attr, v);
       try{ localStorage.setItem(key, v); }catch(e){}
