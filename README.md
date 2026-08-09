@@ -11,14 +11,42 @@ synthesized at runtime with the Web Audio API.
 
 | | Piece | | Length | Play along |
 |---|---|---|---|---|
-| 01 | **[Afterglow](afterglow.html)** | Lo-fi · C minor · 4/4 · 96 bars | ~5 min | [RHODES.md](RHODES.md) |
-| 02 | **[Evensong](evensong.html)** | Ensemble · D major · 3/4 · 106 bars | ~5½ min | [VIOLIN.md](VIOLIN.md) |
-| 03 | **[Blue Hour](blue-hour.html)** | Nocturne · D♭ major · 4/4 · 106 bars | ~7½ min | [PIANO.md](PIANO.md) |
-| 04 | **[Still Water](still-water.html)** | Suite · E minor · 6/8 · 122 bars | ~5 min | [TAB.md](TAB.md) |
+| 01 | **[Sunroom](sunroom.html)** | Ambient pop · E major · 4/4 · 104 bars | ~7 min | [KEYS.md](KEYS.md) |
+| 02 | **[Afterglow](afterglow.html)** | Lo-fi · C minor · 4/4 · 96 bars | ~5 min | [RHODES.md](RHODES.md) |
+| 03 | **[Evensong](evensong.html)** | Ensemble · D major · 3/4 · 106 bars | ~5½ min | [VIOLIN.md](VIOLIN.md) |
+| 04 | **[Blue Hour](blue-hour.html)** | Nocturne · D♭ major · 4/4 · 106 bars | ~7½ min | [PIANO.md](PIANO.md) |
+| 05 | **[Still Water](still-water.html)** | Suite · E minor · 6/8 · 122 bars | ~5 min | [TAB.md](TAB.md) |
 
 `index.html` is the shelf they sit on.
 
 ---
+
+### Sunroom
+
+Four chords that only ever console, and thirteen sections that add one thing at a time
+and then take it all away again.
+
+| Bars | Section | What happens |
+|---|---|---|
+| 1–16 | Waking | Pad and air alone, then the piano |
+| 17–32 | Sunlight | Guitar, bass and soft percussion |
+| 33–48 | Memory | The whispered voice takes the tune; a pluck synth behind it |
+| 49–64 | Wider | G and D arrive — ♭III and ♭VII, borrowed from the parallel minor |
+| 65–80 | Harmony | The fullest it gets, which is still quiet |
+| 81–104 | Letting in / Still | Everything leaves in the order it arrived |
+
+Nine parts: voice, piano, guitar, pluck, bell, perc, bass, pad, air. The page draws a
+**field** rather than an instrument — time across, pitch up — so the bar reads as a
+constellation and you watch it fill and empty.
+
+The whisper is the piece's one real synthesis problem. A whisper is mostly air, so the
+voice is two narrow noise bands tracking the note (which is the only reason you hear a
+pitch at all), a third band fixed where the breath is, and a very quiet sine underneath
+as the only actual tone in it. **Breath** — a fifth control — trades the noise against
+the sine, from a whisper to something nearly sung.
+
+Everything chordal is voiced below the tune and everything glittering above it, so the
+whisper never has to compete: there are no semitone collisions with it anywhere.
 
 ### Afterglow
 
@@ -114,6 +142,7 @@ Nine parts: guitar I and II, harp, bass, cello, viola, flute, glass, pad.
 | Violins, viola, cello | Two detuned sawtooths plus a sine sub through a filter that opens across the stroke. In *Evensong* the vibrato ramps in after the note has started, the way a player actually does it, and a bandpassed breath of bow noise sits at the contact point. |
 | Clarinet | A square wave — all odd harmonics, which is the whole trick — under a filter sweep, with the vibrato ramping in late. |
 | Flute | Sine and triangle with 5.2 Hz vibrato, plus a bandpassed noise burst at each onset for the breath transient. |
+| Whisper | Two narrow bandpasses of noise tracking the note, a third fixed at 2.85 kHz for the breath, and a sine at about a tenth of the level underneath — the only voiced part of it. |
 | Rhodes | FM: one sine bending another at the same frequency, with the modulation index dying away in 0.16 s against a note that lasts seconds. That collapse from bark to bell is the whole sound. |
 | Kit | Kick is a sine swept 118→44 Hz with a lowpassed beater on top; rim is a bandpassed noise burst with a 336 Hz tick under it; hats are highpassed noise, 28 ms for the ghosts. |
 | Voice | A sawtooth through three bandpass formants at 360 / 810 / 2600 Hz, on a dotted-eighth feedback delay. |
@@ -165,7 +194,7 @@ every colour, face and rule already reads from a token.
 **Motion** decides what a note does once it has sounded. The note still lights in every mode;
 this only governs the mark it leaves behind, and each piece points it at its own instrument.
 
-| | On a keyboard | On a string, or a step |
+| | On a keyboard | On a string, a step, or a field |
 |---|---|---|
 | **Bloom** | A glow lifting off the key | The string glowing where it was struck |
 | **Ripple** | A ring opening out from the key | A ring opening out from the fret |
@@ -182,10 +211,11 @@ motion starts on **Still**.
 ## Playing along
 
 Click any part name in the score map to mute it and the rest becomes a backing track.
-Mute **Rhodes**, **Violin I**, **Piano R** or **Guitar I** and the part you'd play is the
-one that's missing. Each has a written edition — [`RHODES.md`](RHODES.md),
-[`VIOLIN.md`](VIOLIN.md), [`PIANO.md`](PIANO.md) and [`TAB.md`](TAB.md) — and every player
-shows the current bar as it goes. Drop the tempo while you learn it.
+Mute **Voice**, **Rhodes**, **Violin I**, **Piano R** or **Guitar I** and the part you'd
+play is the one that's missing. Each has a written edition — [`KEYS.md`](KEYS.md),
+[`RHODES.md`](RHODES.md), [`VIOLIN.md`](VIOLIN.md), [`PIANO.md`](PIANO.md) and
+[`TAB.md`](TAB.md) — and every player shows the current bar as it goes. Drop the tempo
+while you learn it.
 
 ## Structure of a player
 
