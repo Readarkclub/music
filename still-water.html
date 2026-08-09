@@ -16,8 +16,6 @@
     --mono:'SF Mono','JetBrains Mono',Menlo,Consolas,'Liberation Mono',monospace;
     --display:var(--serif); --label:var(--mono);
     --h1-style:italic; --h1-weight:400; --h1-track:-.01em;
-    --mark-fill:radial-gradient(circle,var(--kc) 0%,transparent 62%);
-    --mark-border:0 solid transparent;
     --sec-a:#C9A06A; --sec-b:#9FC4C6; --sec-c:#D8C08E; --sec-d:#E3EDEA;
   }
 
@@ -31,8 +29,6 @@
     --display:'Cormorant Garamond','EB Garamond',Garamond,'Palatino Linotype',Georgia,serif;
     --label:var(--serif);
     --h1-style:normal; --h1-weight:300; --h1-track:-.015em;
-    /* the system draws with strokes, not fills — so marks become rings here */
-    --mark-fill:none; --mark-border:1px solid var(--kc);
     --sec-a:#B0803A; --sec-b:#5F8F83; --sec-c:#A9714F; --sec-d:#201F1D;
   }
   :root[data-style="classical"] .credit,
@@ -103,8 +99,10 @@
   .mark{position:absolute;top:50%;pointer-events:none;opacity:0;border-radius:50%}
   /* bloom — the string glowing where it was struck */
   .mark.m-bloom{width:56px;height:56px;margin:-28px 0 0 -28px;
-    background:var(--mark-fill);border:var(--mark-border);
+    background:radial-gradient(circle,var(--kc) 0%,transparent 62%);
     animation:m-bloom 1.9s cubic-bezier(.15,.7,.3,1) forwards}
+  /* stroke, not fill, on paper — and --kc must be read on the mark itself */
+  :root[data-style="classical"] .mark.m-bloom{background:none;border:1.5px solid var(--kc)}
   @keyframes m-bloom{0%{opacity:.85;transform:scale(.28)}100%{opacity:0;transform:scale(1.5)}}
   /* ripple — a ring opening out from the fret */
   .mark.m-ripple{width:22px;height:22px;margin:-11px 0 0 -11px;border:1.5px solid var(--kc);

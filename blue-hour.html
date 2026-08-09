@@ -17,8 +17,7 @@
     --mono:'SF Mono','JetBrains Mono',Menlo,Consolas,'Liberation Mono',monospace;
     --display:var(--serif); --label:var(--mono);
     --h1-style:italic; --h1-weight:400; --h1-track:-.01em;
-    --glow:20px; --mark-fill:radial-gradient(circle,var(--kc) 0%,transparent 62%);
-    --mark-border:0 solid transparent;
+    --glow:20px;
   }
 
   /* ── Classical — the packaged design system, on paper ─────────────────── */
@@ -32,8 +31,7 @@
     --display:'Cormorant Garamond','EB Garamond',Garamond,'Palatino Linotype',Georgia,serif;
     --label:var(--serif);
     --h1-style:normal; --h1-weight:300; --h1-track:-.015em;
-    /* the system draws with strokes, not fills — so marks become rings here */
-    --glow:0px; --mark-fill:none; --mark-border:1px solid var(--kc);
+    --glow:0px;
   }
   :root[data-style="classical"] .credit,
   :root[data-style="classical"] footer{text-align:justify;hyphens:auto;text-wrap:pretty}
@@ -96,11 +94,18 @@
     mask-image:linear-gradient(to top,#000 58%,transparent)}
   .mark{position:absolute;bottom:0;pointer-events:none;opacity:0;border-radius:50%}
 
-  /* bloom — a glow lifting off the key */
-  .mark.m-bloom{width:70px;height:70px;margin:0 0 -32px -35px;
-    background:var(--mark-fill);border:var(--mark-border);
-    animation:m-bloom 2.1s cubic-bezier(.15,.7,.3,1) forwards}
-  @keyframes m-bloom{0%{opacity:.7;transform:scale(.22)}100%{opacity:0;transform:scale(1.35)}}
+  /* bloom — a glow lifting off the key. It has to travel up into the strip:
+     centred on the key itself its core lands on the clip edge and vanishes. */
+  .mark.m-bloom{width:104px;height:104px;margin:0 0 -30px -52px;
+    background:radial-gradient(circle,var(--kc) 0%,transparent 62%);
+    animation:m-bloom 2.2s cubic-bezier(.15,.7,.3,1) forwards}
+  /* the Classical system draws with strokes, not fills, so the bloom is a ring
+     there. --kc lives on the mark, so it has to be referenced right here: routed
+     through a :root token it resolves against :root and computes to nothing. */
+  :root[data-style="classical"] .mark.m-bloom{background:none;border:1.5px solid var(--kc)}
+  @keyframes m-bloom{
+    0%{opacity:.92;transform:translateY(8px) scale(.3)}
+    100%{opacity:0;transform:translateY(-34px) scale(1.18)}}
 
   /* ripple — a ring opening out from the key */
   .mark.m-ripple{width:26px;height:26px;margin:0 0 -13px -13px;
