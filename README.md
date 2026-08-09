@@ -11,12 +11,37 @@ synthesized at runtime with the Web Audio API.
 
 | | Piece | | Length | Play along |
 |---|---|---|---|---|
-| 01 | **[Blue Hour](blue-hour.html)** | Nocturne · D♭ major · 4/4 · 106 bars | ~7½ min | [PIANO.md](PIANO.md) |
-| 02 | **[Still Water](still-water.html)** | Suite · E minor · 6/8 · 122 bars | ~5 min | [TAB.md](TAB.md) |
+| 01 | **[Evensong](evensong.html)** | Ensemble · D major · 3/4 · 106 bars | ~5½ min | [VIOLIN.md](VIOLIN.md) |
+| 02 | **[Blue Hour](blue-hour.html)** | Nocturne · D♭ major · 4/4 · 106 bars | ~7½ min | [PIANO.md](PIANO.md) |
+| 03 | **[Still Water](still-water.html)** | Suite · E minor · 6/8 · 122 bars | ~5 min | [TAB.md](TAB.md) |
 
 `index.html` is the shelf they sit on.
 
 ---
+
+### Evensong
+
+A violin tune over a small ensemble, in three.
+
+| Bars | Section | What happens |
+|---|---|---|
+| 1–16 | Dusk falling | Harp and pad alone, then cello and celesta |
+| 17–32 | Song | The violin states the tune; violin II takes it in octaves |
+| 33–48 | Meadow | F major arrives out of nowhere; the cello answers two octaves down |
+| 49–64 | Turning | The head of the tune in canon, three voices deep, two bars apart |
+| 65–80 | Full | The ensemble together, the tune in three octaves |
+| 81–96 | Going | Everything drops away but violin, harp and cello |
+| 97–106 | Rest | One chord a bar, then the open D alone |
+
+Nine parts: violin I and II, viola, cello, bass, harp, celesta, horn, pad. The page draws
+the violin's fingerboard rather than a keyboard — no frets, so the mark is simply where
+the finger stops the string, with the I, III and V positions marked behind it.
+
+Two rules keep the ensemble out of the tune's way, and both are in the score code rather
+than in the notes: the harp is voiced below the violin's floor, because its top notes
+otherwise state the root or third exactly where the tune leans on the ninth or seventh;
+and any held inner voice that would land a semitone from the tune moves to the nearest
+chord tone that doesn't. The result has no sustained-voice semitone collisions at all.
 
 ### Blue Hour
 
@@ -59,10 +84,12 @@ Nine parts: guitar I and II, harp, bass, cello, viola, flute, glass, pad.
 |---|---|
 | Piano | Ten inharmonic partials per string — `fₙ = nf√(1+Bn²)` — each with its own decay time, the upper ones dying first, plus a filtered hammer thump. Fired as two sources a few cents apart, which is where the beating comes from. |
 | Guitars, harp, basses | Karplus–Strong — a noise burst circulating in a tuned delay line with a one-pole averaging filter. Excitation warmth and decay time differ per instrument. |
-| Cello, viola | Two detuned sawtooths plus a sine sub through a filter that opens and closes across the note, which produces the bow-stroke swell. |
+| Violins, viola, cello | Two detuned sawtooths plus a sine sub through a filter that opens across the stroke. In *Evensong* the vibrato ramps in after the note has started, the way a player actually does it, and a bandpassed breath of bow noise sits at the contact point. |
 | Clarinet | A square wave — all odd harmonics, which is the whole trick — under a filter sweep, with the vibrato ramping in late. |
 | Flute | Sine and triangle with 5.2 Hz vibrato, plus a bandpassed noise burst at each onset for the breath transient. |
 | Vibraphone | Sines at 1 : 3.94 : 9.2, the real bar modes, through a 3.6 Hz tremolo. |
+| Celesta | Sines at 1 : 4.1 : 10.2, struck and short. |
+| Horn | Almost all fundamental and octave under a filter sweep, with a slow lip onto the note. |
 | Glass, harmonics | Three stacked sines at slightly stretched partial ratios. |
 | Pad | Three detuned oscillators through a filter breathing over four bars, mixed low. |
 | Air | Noise through two slow bandpasses tuned off the bass note. Not a note — the room deciding to breathe. |
@@ -107,7 +134,7 @@ every colour, face and rule already reads from a token.
 **Motion** decides what a note does once it has sounded. The note still lights in every mode;
 this only governs the mark it leaves behind, and each piece points it at its own instrument.
 
-| | On the piano | On the fretboard |
+| | On a keyboard | On a fingerboard |
 |---|---|---|
 | **Bloom** | A glow lifting off the key | The string glowing where it was struck |
 | **Ripple** | A ring opening out from the key | A ring opening out from the fret |
@@ -124,9 +151,9 @@ motion starts on **Still**.
 ## Playing along
 
 Click any part name in the score map to mute it and the rest becomes a backing track.
-Mute **Piano R** in *Blue Hour* or **Guitar I** in *Still Water* and the part you'd play is
-the one that's missing. Both have a written arrangement — [`PIANO.md`](PIANO.md) and
-[`TAB.md`](TAB.md) — and both players show the current bar as it goes. Drop the tempo while
+Mute **Violin I**, **Piano R** or **Guitar I** and the part you'd play is the one that's
+missing. Each has a written edition — [`VIOLIN.md`](VIOLIN.md), [`PIANO.md`](PIANO.md) and
+[`TAB.md`](TAB.md) — and every player shows the current bar as it goes. Drop the tempo while
 you learn it.
 
 ## Structure of a player

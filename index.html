@@ -94,7 +94,7 @@
     <p>Each player shows its own score as it goes. Click any part name to mute it, and the
     piece keeps playing without it — <em>which is how you turn any of these into something
     to play along with.</em></p>
-    <p>Both players also carry a <b>Motion</b> switch next to the design chooser: what a note leaves
+    <p>Every player also carries a <b>Motion</b> switch next to the design chooser: what a note leaves
     behind after it sounds, from a glow to a slow piano roll of the last few seconds, or
     nothing at all. Whatever you pick here follows you onto every page.</p>
   </section>
@@ -121,6 +121,18 @@
 /* One entry per piece. `arc` is the shape of the piece section by section —
    purely decorative, but it tells you where the loud bit is before you click. */
 const PIECES = [
+  {
+    slug : 'evensong',
+    title: 'Evensong',
+    line : 'Ensemble · D major · 3/4 · 106 bars · about five and a half minutes',
+    parts: 'Violin I & II · viola · cello · bass · harp · celesta · horn · pad',
+    tint : '#D9A86A', tintLight: '#B0803A',
+    blurb: 'A violin tune over a small ensemble, in three. It is stated once plainly, ' +
+           'opens into F major, comes apart into a canon three voices deep, returns in ' +
+           'octaves, and is left alone on the open D. <b>Mute Violin I to play it ' +
+           'yourself.</b>',
+    arc  : [.20,.28,.38,.48,.52,.60,.58,.68,.96,.92,.46,.30,.16]
+  },
   {
     slug : 'blue-hour',
     title: 'Blue Hour',
