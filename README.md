@@ -73,18 +73,20 @@ in chunks so the page keeps drawing while it happens, so the scheduler never stu
 Timing runs off a 30 ms lookahead loop against `AudioContext.currentTime` rather than
 `setTimeout`.
 
-## Look and motion
+## Design and motion
 
-Every page carries two switches, top left. Both choices are saved and follow you between
-pages; a small script in `<head>` reads them before first paint, so nothing flashes.
+Every page opens with a **Design** chooser at the top — two named options, each carrying a
+swatch of the ground it will give you — and a quieter **Motion** switch beside it. Both
+choices are saved and follow you between pages; a small script in `<head>` reads them before
+first paint, so nothing flashes.
 
-**Look** swaps one block of CSS custom properties. Nothing else in the stylesheet changes —
+**Design** swaps one block of CSS custom properties. Nothing else in the stylesheet changes —
 every colour, face and rule already reads from a token.
 
 | | |
 |---|---|
 | **Nocturne** | The default. Dark ground, the piece played in an unlit room. |
-| **Classical** | An editorial paper ground built on the Classical design system: Cormorant Garamond over Lora where they're installed, justified copy, hairline rules, colour applied as stroke rather than fill. The keyboard becomes a real one — white keys, black keys. |
+| **Classical** | An editorial paper ground built on the Classical design system: Cormorant Garamond over Lora where they're installed, justified copy, hairline rules, colour applied as stroke rather than fill, and the system's own low-chroma part pigments so the score reads as tinted ink rather than a chart legend. The keyboard becomes a real one — white keys, black keys. |
 
 **Motion** decides what a note does once it has sounded. The key still lights in every mode;
 this only governs the mark it leaves behind.
