@@ -11,13 +11,40 @@ synthesized at runtime with the Web Audio API.
 
 | | Piece | | Length | Play along |
 |---|---|---|---|---|
-| 01 | **[Evensong](evensong.html)** | Ensemble · D major · 3/4 · 106 bars | ~5½ min | [VIOLIN.md](VIOLIN.md) |
-| 02 | **[Blue Hour](blue-hour.html)** | Nocturne · D♭ major · 4/4 · 106 bars | ~7½ min | [PIANO.md](PIANO.md) |
-| 03 | **[Still Water](still-water.html)** | Suite · E minor · 6/8 · 122 bars | ~5 min | [TAB.md](TAB.md) |
+| 01 | **[Afterglow](afterglow.html)** | Lo-fi · C minor · 4/4 · 96 bars | ~5 min | [RHODES.md](RHODES.md) |
+| 02 | **[Evensong](evensong.html)** | Ensemble · D major · 3/4 · 106 bars | ~5½ min | [VIOLIN.md](VIOLIN.md) |
+| 03 | **[Blue Hour](blue-hour.html)** | Nocturne · D♭ major · 4/4 · 106 bars | ~7½ min | [PIANO.md](PIANO.md) |
+| 04 | **[Still Water](still-water.html)** | Suite · E minor · 6/8 · 122 bars | ~5 min | [TAB.md](TAB.md) |
 
 `index.html` is the shelf they sit on.
 
 ---
+
+### Afterglow
+
+A four-chord loop, swung, that never resolves anywhere it hasn't already been.
+
+| Bars | Section | What happens |
+|---|---|---|
+| 1–16 | Sundown | Rhodes and pad over vinyl, no beat |
+| 17–32 | Groove | The kit comes in; bass follows the kick |
+| 33–48 | Drift | A wordless voice on a dotted-eighth echo, guitar shadowing it |
+| 49–64 | Faraway | Bridge — the drums drop out for eight bars, then return |
+| 65–80 | Amber | The fullest it gets, which is not very |
+| 81–96 | Letting go | The kit leaves, then everything but the Rhodes |
+
+Nine parts: Rhodes, voice, guitar, bass, kick, rim, hat, pad, vinyl. The page draws a
+sixteen-step grid rather than an instrument, because that is what this music is made on —
+you can see the kick land on the "a" of two, and the hats' ghost notes between the eighths.
+
+Three things make it sit right rather than sounding like a demo. The off-sixteenths are
+played 17% late, which is the swing. Every part but the kit ducks about 2.5 dB under each
+kick and recovers over a quarter of a second, which is the pump. And the Rhodes is voiced
+in one fixed hand position with a ceiling of E4 — deriving it from each chord's own bass
+instead sends B♭9sus ten semitones above Cm and lands its top note inside the tune.
+
+**Wear** is a fifth control, unique to this piece: crackle level and tape drift together,
+from a clean signal to a well-loved record.
 
 ### Evensong
 
@@ -87,6 +114,10 @@ Nine parts: guitar I and II, harp, bass, cello, viola, flute, glass, pad.
 | Violins, viola, cello | Two detuned sawtooths plus a sine sub through a filter that opens across the stroke. In *Evensong* the vibrato ramps in after the note has started, the way a player actually does it, and a bandpassed breath of bow noise sits at the contact point. |
 | Clarinet | A square wave — all odd harmonics, which is the whole trick — under a filter sweep, with the vibrato ramping in late. |
 | Flute | Sine and triangle with 5.2 Hz vibrato, plus a bandpassed noise burst at each onset for the breath transient. |
+| Rhodes | FM: one sine bending another at the same frequency, with the modulation index dying away in 0.16 s against a note that lasts seconds. That collapse from bark to bell is the whole sound. |
+| Kit | Kick is a sine swept 118→44 Hz with a lowpassed beater on top; rim is a bandpassed noise burst with a 336 Hz tick under it; hats are highpassed noise, 28 ms for the ghosts. |
+| Voice | A sawtooth through three bandpass formants at 360 / 810 / 2600 Hz, on a dotted-eighth feedback delay. |
+| Vinyl | A crackle buffer of sparse decaying pops plus highpassed hiss, both looping; the same control detunes every plucked and struck buffer for wow and flutter. |
 | Vibraphone | Sines at 1 : 3.94 : 9.2, the real bar modes, through a 3.6 Hz tremolo. |
 | Celesta | Sines at 1 : 4.1 : 10.2, struck and short. |
 | Horn | Almost all fundamental and octave under a filter sweep, with a slow lip onto the note. |
@@ -134,7 +165,7 @@ every colour, face and rule already reads from a token.
 **Motion** decides what a note does once it has sounded. The note still lights in every mode;
 this only governs the mark it leaves behind, and each piece points it at its own instrument.
 
-| | On a keyboard | On a fingerboard |
+| | On a keyboard | On a string, or a step |
 |---|---|---|
 | **Bloom** | A glow lifting off the key | The string glowing where it was struck |
 | **Ripple** | A ring opening out from the key | A ring opening out from the fret |
@@ -151,10 +182,10 @@ motion starts on **Still**.
 ## Playing along
 
 Click any part name in the score map to mute it and the rest becomes a backing track.
-Mute **Violin I**, **Piano R** or **Guitar I** and the part you'd play is the one that's
-missing. Each has a written edition — [`VIOLIN.md`](VIOLIN.md), [`PIANO.md`](PIANO.md) and
-[`TAB.md`](TAB.md) — and every player shows the current bar as it goes. Drop the tempo while
-you learn it.
+Mute **Rhodes**, **Violin I**, **Piano R** or **Guitar I** and the part you'd play is the
+one that's missing. Each has a written edition — [`RHODES.md`](RHODES.md),
+[`VIOLIN.md`](VIOLIN.md), [`PIANO.md`](PIANO.md) and [`TAB.md`](TAB.md) — and every player
+shows the current bar as it goes. Drop the tempo while you learn it.
 
 ## Structure of a player
 
