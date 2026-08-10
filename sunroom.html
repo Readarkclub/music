@@ -150,10 +150,12 @@
   <p class="eyebrow">Ambient pop · E major · 4/4 · 104 bars · about seven minutes</p>
   <h1>Sunroom</h1>
   <p class="credit justified">Four chords that only ever console, and thirteen sections that
-  add one thing at a time and then take it all away again. A whispered voice carries the tune —
-  more breath than tone, which is why it stays out of the way. Piano, acoustic guitar, a pluck
-  synth, soft percussion and a pad underneath, and about six minutes in it opens for eight bars
-  into two chords that don't belong to the key. Mute <b>Voice</b> to hum it yourself.</p>
+  add one thing at a time and then take it all away again. A woman's voice hums from
+  <b>Sunlight</b>, about a minute in, and takes the tune from <b>Memory</b> — she is synthesised
+  the way a person works, a glottal source through the four mouth resonances, opening from a
+  closed hum into the vowel on every note. Piano, acoustic guitar, a pluck synth, soft
+  percussion and a pad underneath, and about six minutes in it opens for eight bars into two
+  chords that don't belong to the key. Mute <b>Voice</b> to sing it yourself.</p>
 
   <div class="fieldwrap">
     <div class="field" id="field" data-qm-pool="28"></div>
@@ -175,7 +177,7 @@
     <div class="knob"><label for="room">Room</label>
       <input type="range" id="room" min="0" max="95" step="1" value="58"><span class="val" id="roomval">58%</span></div>
     <div class="knob"><label for="breathy">Breath</label>
-      <input type="range" id="breathy" min="0" max="100" step="1" value="66"><span class="val" id="breathyval">66%</span></div>
+      <input type="range" id="breathy" min="0" max="100" step="1" value="42"><span class="val" id="breathyval">42%</span></div>
     <label class="check"><input type="checkbox" id="loop"><span class="val" style="min-width:0">Loop</span></label>
   </div>
 
@@ -193,8 +195,8 @@
   <footer class="justified">
     Breathe in across two bars, out across the next two — at the default tempo that is under
     four breaths a minute, the slowest on this shelf. <em>Nothing here needs you to follow
-    it.</em> <b>Breath</b> sets how much of the voice is air rather than tone: all the way up
-    is a whisper, all the way down is nearly singing. The chords are in
+    it.</em> <b>Breath</b> sets how much of the voice is air rather than tone: all the way down
+    she sings out, all the way up she is only whispering it. The chords are in
     <a href="https://github.com/readarkclub/music/blob/main/KEYS.md">KEYS.md</a>.
   </footer>
 
@@ -238,7 +240,7 @@ function voicing(c, targets, minGap, cap){
   return out;
 }
 /* The tune lives between 66 and 76. Everything chordal is voiced below it and
-   everything glittering above it, so the whisper never has to compete. */
+   everything glittering above it, so she never has to compete. */
 Object.values(CH).forEach(c => {
   c.keys  = voicing(c, [40,47,52,57,62], 3, 64);
   c.gtr   = voicing(c, [52,59], 4, 64);
@@ -250,7 +252,8 @@ Object.values(CH).forEach(c => {
 });
 
 /* ==================== the tune ====================
-   [barOffset, eighth, midi, durationInEighths] — narrow, because a whisper is */
+   [barOffset, eighth, midi, durationInEighths] — narrow, F♯4 to E5, because
+   nothing here should sound like effort */
 const THEMES = {
   /* over  E  A  C♯m  Bsus  E  A  F♯m  Bsus */
   A: [[0,2,71,6],
@@ -260,6 +263,12 @@ const THEMES = {
       [4,2,71,4],[4,6,76,2],
       [5,0,73,4],[5,4,76,4],
       [6,2,73,6],
+      [7,0,71,8]],
+  /* she is in the room long before she sings anything: four long notes, no
+     shape to speak of, so the tune still arrives as an arrival */
+  H: [[0,2,71,10],
+      [3,0,68,10],
+      [4,4,73,8],
       [7,0,71,8]],
   /* over  G  D  E  A  G  D  F♯m  Bsus — the eight bars that open up */
   B: [[0,0,71,6],
@@ -294,24 +303,26 @@ const PERC = {
 const FORM = [
  {t:'Waking',  ch:'E A Csm B E A Fsm B', pat:'still', pc:'none', on:'pad air',                        lvl:-7},
  {t:'',        ch:'E A Csm B E A Fsm B', pat:'drops', pc:'none', on:'pad air piano',                  lvl:-6},
- {t:'Sunlight',ch:'E A Csm B E A Fsm B', pat:'drops', pc:'soft', on:'pad air piano gtr bass perc',    lvl:-7},
- {t:'',        ch:'E A Csm B E A Fsm B', pat:'open',  pc:'soft', on:'pad air piano gtr bass perc pluck', lvl:-6},
+ {t:'Sunlight',ch:'E A Csm B E A Fsm B', pat:'drops', pc:'soft', on:'pad air piano gtr bass perc voice', lvl:-7,
+               mel:[['voice','H',0,-9,0]]},
+ {t:'',        ch:'E A Csm B E A Fsm B', pat:'open',  pc:'soft', on:'pad air piano gtr bass perc pluck voice', lvl:-6,
+               mel:[['voice','H',0,-7,0]]},
  {t:'Memory',  ch:'E A Csm B E A Fsm B', pat:'open',  pc:'main', on:'pad air piano gtr bass perc pluck voice', lvl:-6,
-               mel:[['voice','A',0,-9,0]]},
+               mel:[['voice','A',0,-2,0]]},
  {t:'',        ch:'E A Csm B E A Fsm B', pat:'flow',  pc:'main', on:'pad air piano gtr bass perc pluck voice bell', lvl:-5,
-               mel:[['voice','A',0,-9,0]]},
+               mel:[['voice','A',0,-2,0]]},
  {t:'Wider',   ch:'G D E A G D Fsm B',   pat:'flow',  pc:'main', on:'pad air piano gtr bass perc pluck voice bell', lvl:-4,
-               mel:[['voice','B',0,-8,0]]},
+               mel:[['voice','B',0,-1,0]]},
  {t:'',        ch:'G D E A G D Fsm B',   pat:'bloom', pc:'full', on:'pad air piano gtr bass perc pluck voice bell', lvl:-3,
-               mel:[['voice','B',0,-8,0],['gtr','B',-12,-17,0]]},
+               mel:[['voice','B',0,-1,0],['gtr','B',-12,-17,0]]},
  {t:'Harmony', ch:'E A Csm B E A Fsm B', pat:'bloom', pc:'full', on:'pad air piano gtr bass perc pluck voice bell', lvl:-2,
-               mel:[['voice','A',0,-7,0],['pluck','A',12,-18,0]]},
+               mel:[['voice','A',0,0,0],['pluck','A',12,-18,0]]},
  {t:'',        ch:'E A Csm B E A Fsm B', pat:'bloom', pc:'main', on:'pad air piano gtr bass perc pluck voice bell', lvl:-3,
-               mel:[['voice','A',0,-8,0]]},
+               mel:[['voice','A',0,-1,0]]},
  {t:'Letting in', ch:'E A Csm B E A Fsm B', pat:'flow', pc:'soft', on:'pad air piano gtr bass voice bell', lvl:-5,
-               mel:[['voice','A',0,-10,0]]},
+               mel:[['voice','A',0,-3,0]]},
  {t:'',        ch:'E A Csm B E A Fsm B', pat:'hold',  pc:'none', on:'pad air piano voice',             lvl:-8,
-               mel:[['voice','A',0,-12,0]]},
+               mel:[['voice','A',0,-5,0]]},
  {t:'Still',   ch:'E A Csm B E A Fsm E', pat:'still', pc:'none', on:'pad air piano',                  lvl:-11}
 ];
 
@@ -414,11 +425,16 @@ function clearOfTune(c, ideal, tune, lo, hi){
     });
 
     (sec.mel || []).forEach(([part, id, tr, db, delay]) => {
+      let prevEnd = -99;
       THEMES[id].forEach(([ob, s, m, dur]) => {
         const b = start + ob + (delay || 0);
         if(b >= start + chords.length) return;
+        /* a phrase opens where the last one left more than a bar of silence */
+        const at = (ob + (delay || 0))*8 + s, opening = at - prevEnd > 8;
+        prevEnd = at + dur;
         BARS[b].notes.push({part, s, midi:m+tr, lead:part === 'voice'});
-        EV.push({part, pos:b*8+s, bar:b, slot:s, midi:m+tr, lvl:db + sec.lvl, dur, mel:true});
+        EV.push({part, pos:b*8+s, bar:b, slot:s, midi:m+tr, lvl:db + sec.lvl,
+                 dur, mel:true, opening});
       });
     });
 
@@ -436,8 +452,10 @@ PARTS.forEach(p => muted[p.id] = false);
 const g  = db => Math.pow(10, db/20);
 const hz = m  => 440*Math.pow(2,(m-69)/12);
 /* This one blooms from almost nothing, so it needs more gain than the others
-   to land at the same loudness at its fullest. A master above 1 is fine. */
-const OUT = 1.55;
+   to land at the same loudness at its fullest — but the two fullest sections
+   were measured at +1.6 dBFS with the voice sitting where it now sits, which
+   is clipping, so this leaves about 2 dB of headroom instead. */
+const OUT = 1.02;
 
 function pianoBuffer(freq, secs){
   const sr = ctx.sampleRate, len = Math.ceil(sr*secs), nyq = sr*0.5;
@@ -514,7 +532,7 @@ function noiseBuf(secs){
 }
 
 const BUSDEF = {
-  voice:{lp:6500,db:-4}, piano:{lp:4000,db:-5}, gtr:{lp:3200,db:-8},
+  voice:{lp:7500,hp:150,db:0}, piano:{lp:4000,db:-5}, gtr:{lp:3200,db:-8},
   pluck:{lp:7000,db:-10}, bell:{lp:9000,db:-12}, perc:{lp:11000,db:-12},
   bass:{lp:380,db:-4},   pad:{lp:900,db:-5},    air:{lp:4200,db:-9}
 };
@@ -544,11 +562,18 @@ function initAudio(){
     const lp = ctx.createBiquadFilter(); lp.type='lowpass';
     lp.frequency.value = d.lp; lp.Q.value = 0.4;
     const gn = ctx.createGain(); gn.gain.value = Math.pow(10, d.db/20);
+    let head = lp;
+    if(d.hp){                       /* nothing of hers lives down there */
+      const hp = ctx.createBiquadFilter(); hp.type='highpass';
+      hp.frequency.value = d.hp; hp.Q.value = 0.6;
+      hp.connect(lp); head = hp;
+    }
     lp.connect(gn); gn.connect(dryG);
     if(conv) gn.connect(conv);
-    buses[id] = {input:lp, gain:gn};
+    buses[id] = {input:head, gain:gn};
   });
   noise = noiseBuf(1.2);
+  glottal = makeGlottal();
 
   const s = ctx.createBufferSource();
   s.buffer = ctx.createBuffer(1,1,ctx.sampleRate);
@@ -573,39 +598,99 @@ function sampled(part, key, t, db, mk){
   src.start(t);
 }
 
-/* A whisper is mostly air. Two narrow bands of noise track the note so you can
-   still hear the pitch, a third sits fixed where the breath is, and a very
-   quiet sine underneath is the only actual voice in it. The Breath control
-   trades one against the other. */
-function whispered(midi, t, dur, db){
-  const f = hz(midi), a = ctx.createGain(), br = breathiness();
+/* A voice is a source and a tract, and it has to be both.
+   ------------------------------------------------------------------------
+   The source is the glottis: a pulse train, not a sine. Its harmonics roll
+   off about 12 dB an octave, and they are what the tract has to work with —
+   run formants over a sine and nothing happens, because a sine has one
+   harmonic and there is nothing there to shape. Run them over noise and you
+   get wind.
+
+   The tract is four bandpass resonances at the positions a woman's mouth
+   puts them, and they slide from one vowel toward another across the note.
+   That slide is most of what makes it read as a person rather than a filter.
+
+   Aspiration — real breath — goes through the same four formants, so it is
+   coloured by the same mouth. Breath trades one source against the other.
+
+   And every note starts closed. A mouth is never already open on the beat —
+   it begins at the hum, m, and opens into the vowel over about a seventh of a
+   second. That one gesture is what separates a singer from a pad, and it is
+   worth more than any amount of care spent on the vowels themselves. */
+const VOWEL = {
+  /*     F1                F2                F3                F4          */
+  m: [[280,0.62,7.0], [1100,0.10,13 ], [2500,0.03,18], [3300,0.02,19]],
+  u: [[370,1.00,5.5], [ 950,0.30,9.5], [2670,0.10,17], [3300,0.05,18]],
+  o: [[450,1.00,6.0], [ 800,0.45,8.5], [2830,0.13,18], [3500,0.06,19]],
+  a: [[850,1.00,9.0], [1220,0.62,11 ], [2810,0.22,18], [3500,0.09,19]]
+};
+let glottal = null;
+function makeGlottal(){
+  const N = 48, real = new Float32Array(N), imag = new Float32Array(N);
+  for(let n=1;n<N;n++) imag[n] = 1/Math.pow(n, 1.28);
+  return ctx.createPeriodicWave(real, imag, {disableNormalization:false});
+}
+
+/* the intake before a phrase — no pitch in it, just a person filling their
+   lungs. It costs almost nothing and it is the most human thing on the page. */
+function breathIn(t, db){
+  const n = ctx.createBufferSource(), bp = ctx.createBiquadFilter(), a = ctx.createGain();
+  n.buffer = noise; n.loop = true;
+  bp.type = 'bandpass'; bp.Q.value = 0.9;
+  bp.frequency.setValueAtTime(620, t);
+  bp.frequency.linearRampToValueAtTime(1150, t+0.42);   /* the mouth opening */
   a.gain.setValueAtTime(0.0001, t);
   a.gain.exponentialRampToValueAtTime(g(db), t+0.30);
-  a.gain.setValueAtTime(g(db), t+dur*0.68);
-  a.gain.exponentialRampToValueAtTime(0.0004, t+dur+1.1);
+  a.gain.exponentialRampToValueAtTime(0.0004, t+0.50);
+  n.connect(bp); bp.connect(a); a.connect(buses.voice.input);
+  n.start(t); n.stop(t+0.55);
+}
+
+function sung(midi, t, dur, db, from, to, opening){
+  const f = hz(midi), br = breathiness(), out = ctx.createGain();
+  if(opening) breathIn(t-0.46, db-9);
+
+  out.gain.setValueAtTime(0.0001, t);
+  out.gain.exponentialRampToValueAtTime(g(db), t+0.20);
+  out.gain.setValueAtTime(g(db), t+dur*0.70);
+  out.gain.exponentialRampToValueAtTime(0.0004, t+dur+1.2);
+
+  /* vibrato arrives once the note has settled, the way a singer's does, and
+     no two notes wobble at quite the same rate */
+  const vib = ctx.createOscillator(), vg = ctx.createGain();
+  vib.type='sine'; vib.frequency.value = 4.9 + Math.random()*0.7;
+  vg.gain.setValueAtTime(0.0001, t);
+  vg.gain.exponentialRampToValueAtTime(38, t+Math.min(0.9, dur*0.45));
+  vib.connect(vg); vib.start(t); vib.stop(t+dur+1.3);
+
+  const src = ctx.createOscillator();
+  src.setPeriodicWave(glottal);
+  src.frequency.setValueAtTime(f*0.972, t);          /* she slides onto it */
+  src.frequency.exponentialRampToValueAtTime(f, t+0.17);
+  vg.connect(src.detune);
+  const sg = ctx.createGain(); sg.gain.value = 1.05*(1.15 - 0.55*br);
+  src.connect(sg); src.start(t); src.stop(t+dur+1.3);
 
   const n = ctx.createBufferSource(); n.buffer = noise; n.loop = true;
-  n.start(t); n.stop(t+dur+1.3);
-  [[f, 16, 0.55],[f*2, 13, 0.30],[2850, 2.2, 0.13]].forEach(([fq, q, amp]) => {
-    if(fq > ctx.sampleRate*0.45) return;
-    const bp = ctx.createBiquadFilter(), bg = ctx.createGain();
-    bp.type='bandpass'; bp.frequency.value=fq; bp.Q.value=q;
-    bg.gain.value = amp*(0.35 + 1.25*br);
-    n.connect(bp); bp.connect(bg); bg.connect(a);
+  const ng = ctx.createGain(); ng.gain.value = 0.13*(0.25 + 1.5*br);
+  n.connect(ng); n.start(t); n.stop(t+dur+1.3);
+
+  /* m -> from -> to: closed, open, and open further */
+  const M = VOWEL.m, A = VOWEL[from], B = VOWEL[to], open = Math.min(0.15, dur*0.22);
+  M.forEach(([mq, mamp, q], i) => {
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass'; bp.Q.value = q;
+    bp.frequency.setValueAtTime(mq, t);
+    bp.frequency.linearRampToValueAtTime(A[i][0], t + open);
+    bp.frequency.linearRampToValueAtTime(B[i][0], t + dur*0.85);
+    const bg = ctx.createGain();
+    bg.gain.setValueAtTime(mamp, t);
+    bg.gain.linearRampToValueAtTime(A[i][1], t + open);
+    bg.gain.linearRampToValueAtTime(B[i][1], t + dur*0.85);
+    sg.connect(bp); ng.connect(bp);
+    bp.connect(bg); bg.connect(out);
   });
-
-  const vib = ctx.createOscillator(), vg = ctx.createGain();
-  vib.type='sine'; vib.frequency.value=4.4;
-  vg.gain.setValueAtTime(0.0001, t);
-  vg.gain.exponentialRampToValueAtTime(6, t+Math.min(1.0, dur*0.5));
-  vib.connect(vg); vib.start(t); vib.stop(t+dur+1.2);
-
-  const o = ctx.createOscillator(), og = ctx.createGain();
-  o.type='sine'; o.frequency.value=f; vg.connect(o.detune);
-  og.gain.value = 0.42*(1.15 - 0.95*br);          /* the tone the breath displaces */
-  o.connect(og); og.connect(a); o.start(t); o.stop(t+dur+1.2);
-
-  a.connect(buses.voice.input);
+  out.connect(buses.voice.input);
 }
 
 /* a soft FM pluck — a bell that stops almost as soon as it starts */
@@ -711,7 +796,11 @@ function fire(e, t, e8){
   if(!ctx) return;
   if(e.midi !== undefined && !isFinite(e.midi)) return;
   switch(e.part){
-    case 'voice': whispered(e.midi, t, (e.dur||8)*e8, e.lvl); break;
+    case 'voice': {
+      const long = (e.dur||8) >= 8;
+      sung(e.midi, t, (e.dur||8)*e8, e.lvl, long?'o':'u', long?'a':'o', e.opening);
+      break;
+    }
     case 'piano': sampled('piano', 'p|'+e.midi, t, e.lvl,
                     () => pianoBuffer(hz(e.midi), PN_SECS(e.midi))); break;
     case 'gtr':   sampled('gtr', 'g|'+e.midi, t, e.lvl,
@@ -782,7 +871,9 @@ async function start(){
     $prep.textContent = n + ' voices';
     preparing = false;
   }
-  anchor = ctx.currentTime + 0.3 - cursor*eighth();
+  /* cursor is an index into EV, not a position — resume from where the next
+     event actually sits, or the whole rest of the piece fires at once */
+  anchor = ctx.currentTime + 0.3 - (cursor < EV.length ? EV[cursor].pos : 0)*eighth();
   playing = true; $play.textContent = 'Pause';
   timer = setInterval(tick, 30); tick();
 }

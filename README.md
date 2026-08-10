@@ -29,8 +29,8 @@ and then take it all away again.
 | Bars | Section | What happens |
 |---|---|---|
 | 1–16 | Waking | Pad and air alone, then the piano |
-| 17–32 | Sunlight | Guitar, bass and soft percussion |
-| 33–48 | Memory | The whispered voice takes the tune; a pluck synth behind it |
+| 17–32 | Sunlight | Guitar, bass and soft percussion — and a voice humming, four long notes a section |
+| 33–48 | Memory | She takes the tune; a pluck synth behind it |
 | 49–64 | Wider | G and D arrive — ♭III and ♭VII, borrowed from the parallel minor |
 | 65–80 | Harmony | The fullest it gets, which is still quiet |
 | 81–104 | Letting in / Still | Everything leaves in the order it arrived |
@@ -39,14 +39,36 @@ Nine parts: voice, piano, guitar, pluck, bell, perc, bass, pad, air. The page dr
 **field** rather than an instrument — time across, pitch up — so the bar reads as a
 constellation and you watch it fill and empty.
 
-The whisper is the piece's one real synthesis problem. A whisper is mostly air, so the
-voice is two narrow noise bands tracking the note (which is the only reason you hear a
-pitch at all), a third band fixed where the breath is, and a very quiet sine underneath
-as the only actual tone in it. **Breath** — a fifth control — trades the noise against
-the sine, from a whisper to something nearly sung.
+The voice is the piece's one real synthesis problem, and the first attempt at it was
+simply wrong: formants over a sine, which does nothing, because a sine has one harmonic
+and there is nothing there to shape. What is there now is source and tract, the way a
+person is:
 
-Everything chordal is voiced below the tune and everything glittering above it, so the
-whisper never has to compete: there are no semitone collisions with it anywhere.
+- **the source** is a 48-harmonic glottal wave rolling off at 1/n^1.28 — a pulse train,
+  not a sine;
+- **the tract** is four bandpass resonances at the frequencies a woman's mouth puts
+  them, sliding from one vowel toward another across the note;
+- **every note starts closed**, at the hum position — F1 280 Hz, F2 damped — and opens
+  into the vowel over about 140 ms. That one gesture is most of what separates a singer
+  from a pad;
+- **phrases begin with an intake**, audible, unpitched, half a second before the note.
+
+Aspiration goes through the same four formants, so the breath is coloured by the same
+mouth. **Breath** — a fifth control — trades the two sources against each other, from a
+full voice at the bottom of the range to a whisper at the top.
+
+Measured at a low pitch, where the harmonics sample the envelope densely enough to see
+it, the vowels land where they were aimed:
+
+| vowel | measured F1 / F2 / F3 | target |
+|---|---|---|
+| u | 370 / 988 / 2716 Hz | 370 / 950 / 2670 |
+| o | 370–494 / 864 / 2840 Hz | 450 / 800 / 2830 |
+| a | 864 / 1235 / 2840 Hz | 850 / 1220 / 2810 |
+
+Everything chordal is voiced below the tune and everything glittering above it, so she
+never has to compete: there are no semitone collisions with the tune anywhere, and she
+sits 2–6 dB under the mix peak in every section she sings in.
 
 ### Afterglow
 
@@ -142,7 +164,7 @@ Nine parts: guitar I and II, harp, bass, cello, viola, flute, glass, pad.
 | Violins, viola, cello | Two detuned sawtooths plus a sine sub through a filter that opens across the stroke. In *Evensong* the vibrato ramps in after the note has started, the way a player actually does it, and a bandpassed breath of bow noise sits at the contact point. |
 | Clarinet | A square wave — all odd harmonics, which is the whole trick — under a filter sweep, with the vibrato ramping in late. |
 | Flute | Sine and triangle with 5.2 Hz vibrato, plus a bandpassed noise burst at each onset for the breath transient. |
-| Whisper | Two narrow bandpasses of noise tracking the note, a third fixed at 2.85 kHz for the breath, and a sine at about a tenth of the level underneath — the only voiced part of it. |
+| Singing voice | A 48-harmonic glottal wave through four bandpass formants at female vowel positions, morphing m → o → a across the note; aspiration noise runs through the same four filters. Vibrato of 38 cents ramps in after the note settles, at a rate that differs slightly every time. |
 | Rhodes | FM: one sine bending another at the same frequency, with the modulation index dying away in 0.16 s against a note that lasts seconds. That collapse from bark to bell is the whole sound. |
 | Kit | Kick is a sine swept 118→44 Hz with a lowpassed beater on top; rim is a bandpassed noise burst with a 336 Hz tick under it; hats are highpassed noise, 28 ms for the ghosts. |
 | Voice | A sawtooth through three bandpass formants at 360 / 810 / 2600 Hz, on a dotted-eighth feedback delay. |

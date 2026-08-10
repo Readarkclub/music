@@ -1,6 +1,6 @@
 # Sunroom
 
-*for piano and a voice that barely uses itself*
+*for piano and a voice that stays close to the mouth*
 
 **Tempo:** about 62. **Feel:** nothing arrives, everything is already there.
 **Pedal:** down, changed once a bar, and late rather than early.
@@ -81,16 +81,29 @@ Notice the right hand does not move at all between them. Only the bass does.
 
 ## The tune
 
-It is whispered on the recording, so it is written low and narrow — you can hum it
-without reaching for anything.
+Written low and narrow — F♯4 up to E5, an octave and a half of nothing difficult. You
+can sing it sitting down.
 
 > **B – C♯ – B | G♯ | F♯ | B – E | C♯ – E | C♯ | B**
 
 Every note is a chord tone. There is nothing in it to get wrong.
 
-If you would rather sing than play: mute **Voice** on the page and it is yours. The
-recording keeps a whisper rather than a note on purpose, because breath sits underneath
-a piano in a way that a sung tone does not.
+She does not arrive with it. From **Sunlight**, about a minute in, there is a voice
+humming four long notes a section — no shape, just someone in the room — and the tune
+proper only starts at **Memory**. That is deliberate: by the time the words-that-aren't-
+words turn into a line, you have stopped noticing when she appeared.
+
+If you would rather sing it than listen to it: mute **Voice** on the page and it is
+yours. **Breath** sets how much air is in her tone — all the way up is a whisper and
+all the way down is a full voice, and anywhere in the middle is a person singing quietly
+to herself, which is the point.
+
+Two things to steal if you sing it yourself, because they are what the synthesis is
+imitating and they work on a real voice too:
+
+- **Start every note closed.** A hum, then open into the vowel. A mouth is never already
+  open on the beat.
+- **Breathe in where the phrase starts, audibly.** Not a gasp. Just don't hide it.
 
 ---
 

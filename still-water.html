@@ -652,7 +652,9 @@ async function start(){
     const n = prepare();
     $prep.textContent = n + ' voices';
   }
-  anchor = ctx.currentTime + 0.3 - cursor*eighth();
+  /* cursor is an index into EV, not a position — resume from where the next
+     event actually sits, or the whole rest of the piece fires at once */
+  anchor = ctx.currentTime + 0.3 - (cursor < EV.length ? EV[cursor].pos : 0)*eighth();
   playing = true; $play.textContent = 'Pause';
   timer = setInterval(tick, 30); tick();
 }
