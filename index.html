@@ -5,16 +5,37 @@
 <meta name="description" content="Five quiet recordings with audio-reactive players and printable scores.">
 <title>Quiet Pieces — Readark Club</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="design.css"><script src="design.js"></script>
+<link rel="stylesheet" href="design.css"><link rel="stylesheet" href="queue-player.css"><script src="design.js"></script>
 <style>
 *{box-sizing:border-box}html,body{margin:0;min-height:100%}body{background:var(--ink);color:var(--pale);font-family:var(--serif);padding:clamp(20px,5vw,68px) clamp(16px,4vw,40px);-webkit-font-smoothing:antialiased}.sheet{width:min(980px,100%);margin:auto}.prefs{margin-bottom:clamp(44px,8vw,92px)}.eyebrow,.num,.detail,.go,.scores,footer{font-family:var(--label);font-variant-numeric:tabular-nums}.eyebrow{margin:0;color:var(--accent);font-size:10px;letter-spacing:.24em;text-transform:uppercase}h1{margin:15px 0 0;font-family:var(--display);font-weight:var(--h1-weight);font-style:var(--h1-style);font-size:clamp(62px,12vw,128px);line-height:.82;letter-spacing:-.055em}.intro{margin:30px 0 0;max-width:59ch;color:var(--silt);font-size:clamp(17px,2vw,21px);line-height:1.65}.collection{margin-top:clamp(58px,10vw,112px);border-top:1px solid var(--edge)}.piece{--local:#E0A458;display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:18px;align-items:center;padding:clamp(24px,4vw,38px) 0;border-bottom:1px solid var(--edge);color:inherit;text-decoration:none;position:relative;overflow:hidden}.piece::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,color-mix(in srgb,var(--local) 11%,transparent),transparent 58%);opacity:0;transform:translateX(-12%);transition:opacity .35s,transform .5s}.piece:hover::before{opacity:1;transform:none}.num{color:var(--faint);font-size:10px;letter-spacing:.18em}.name{margin:0;font-family:var(--display);font-weight:400;font-style:italic;font-size:clamp(30px,5vw,52px);line-height:1;transition:color .25s}.piece:hover .name{color:var(--local)}.detail{margin:10px 0 0;color:var(--silt);font-size:10px;letter-spacing:.12em;text-transform:uppercase}.go{color:var(--silt);font-size:10px;letter-spacing:.15em;text-transform:uppercase;transition:color .25s,transform .25s}.piece:hover .go{color:var(--local);transform:translateX(4px)}.scores{display:flex;justify-content:space-between;gap:24px;align-items:center;margin-top:34px;color:var(--silt);font-size:10px;letter-spacing:.12em;text-transform:uppercase}.scores a{color:var(--pale);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:3px}.scores a:hover{color:var(--accent);border-color:var(--accent)}footer{margin-top:72px;padding-top:18px;border-top:1px solid var(--edge);color:var(--faint);font-size:10px;letter-spacing:.12em;text-transform:uppercase}@media(max-width:600px){.piece{grid-template-columns:32px 1fr}.go{display:none}.scores{align-items:flex-start;flex-direction:column}.detail{line-height:1.6}}
 </style>
 </head>
 <body><main class="sheet"><div class="prefs" data-quiet-switch="design"></div><header><p class="eyebrow">Readark Club · Music</p><h1>Quiet Pieces</h1><p class="intro justified">Five new recordings for slow listening. Each player turns the recording itself into light and motion, with a printable score kept close at hand.</p></header>
+<section class="queue" aria-label="Play every recording">
+  <audio id="queue-audio" preload="metadata"></audio>
+  <div class="queue-intro">
+    <p class="queue-label">Continuous play · loops automatically</p>
+    <div class="queue-title-row"><span id="queue-count">01 / 05</span><h2 id="queue-title">Sunroom Glow</h2></div>
+  </div>
+  <div class="queue-transport">
+    <button class="queue-skip" id="queue-prev" type="button" aria-label="Previous track">←</button>
+    <button class="queue-play" id="queue-play" type="button" aria-label="Play all recordings" aria-pressed="false">
+      <svg class="queue-play-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 2.8v14.4L17 10z"/></svg>
+      <svg class="queue-pause-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 3h4v14H4zm8 0h4v14h-4z"/></svg>
+      <span id="queue-action">Play all</span>
+    </button>
+    <button class="queue-skip" id="queue-next" type="button" aria-label="Next track">→</button>
+  </div>
+  <div class="queue-progress">
+    <input id="queue-scrub" type="range" min="0" max="1000" value="0" aria-label="Current track position">
+    <div><span id="queue-elapsed">0:00</span><span id="queue-duration">2:28</span></div>
+  </div>
+  <p class="queue-note" id="queue-status" aria-live="polite">Five tracks · 13:25 total</p>
+</section>
 <nav class="collection" aria-label="Quiet Pieces">
-<a class="piece" href="sunroom.html" style="--local:#F0C27B"><span class="num">01</span><span><span class="name">Sunroom Glow</span><span class="detail">E major · 4/4 · 2:28 · score included</span></span><span class="go">Listen →</span></a>
-<a class="piece" href="afterglow.html" style="--local:#E8956A"><span class="num">02</span><span><span class="name">Afterglow Drift</span><span class="detail">C minor · 4/4 swung · 1:53 · score included</span></span><span class="go">Listen →</span></a>
-<a class="piece" href="evensong.html" style="--local:#D9A86A"><span class="num">03</span><span><span class="name">Evensong at Dusk</span><span class="detail">D major · 3/4 · 3:07 · score included</span></span><span class="go">Listen →</span></a>
-<a class="piece" href="blue-hour.html" style="--local:#89A7C2"><span class="num">04</span><span><span class="name">Window With Rain</span><span class="detail">D-flat major · 4/4 · 3:03 · score included</span></span><span class="go">Listen →</span></a>
-<a class="piece" href="still-water.html" style="--local:#7FBBA9"><span class="num">05</span><span><span class="name">Still Water</span><span class="detail">E minor · 6/8 · 2:55 · score included</span></span><span class="go">Listen →</span></a>
-</nav><div class="scores"><span>Lead sheets · 10 pages · PDF</span><a href="assets/scores/all-five-pieces.pdf" target="_blank">Open complete scorebook ↗</a></div><footer>Real recordings · audio-reactive motion · no trackers</footer></main></body></html>
+<a class="piece" data-track-index="0" href="sunroom.html" style="--local:#F0C27B"><span class="num">01</span><span><span class="name">Sunroom Glow</span><span class="detail">E major · 4/4 · 2:28 · score included</span></span><span class="go">Listen →</span></a>
+<a class="piece" data-track-index="1" href="afterglow.html" style="--local:#E8956A"><span class="num">02</span><span><span class="name">Afterglow Drift</span><span class="detail">C minor · 4/4 swung · 1:53 · score included</span></span><span class="go">Listen →</span></a>
+<a class="piece" data-track-index="2" href="evensong.html" style="--local:#D9A86A"><span class="num">03</span><span><span class="name">Evensong at Dusk</span><span class="detail">D major · 3/4 · 3:07 · score included</span></span><span class="go">Listen →</span></a>
+<a class="piece" data-track-index="3" href="blue-hour.html" style="--local:#89A7C2"><span class="num">04</span><span><span class="name">Window With Rain</span><span class="detail">D-flat major · 4/4 · 3:03 · score included</span></span><span class="go">Listen →</span></a>
+<a class="piece" data-track-index="4" href="still-water.html" style="--local:#7FBBA9"><span class="num">05</span><span><span class="name">Still Water</span><span class="detail">E minor · 6/8 · 2:55 · score included</span></span><span class="go">Listen →</span></a>
+</nav><div class="scores"><span>Lead sheets · 10 pages · PDF</span><a href="assets/scores/all-five-pieces.pdf" target="_blank">Open complete scorebook ↗</a></div><footer>Real recordings · audio-reactive motion · no trackers</footer></main><script src="queue-player.js"></script></body></html>
